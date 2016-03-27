@@ -1,11 +1,8 @@
-function Player($player) {
+function Player($player, $platform) {
   this.$player = $player;
-  this.pos = 0;
-  this.bindMoveKeys();
+  this.$platform = $platform
 
-  if (this.$player.position().left > 50){
-    this.fall();
-  }
+  this.bindMoveKeys();
 }
 
 Player.prototype.bindMoveKeys = function () {
@@ -16,8 +13,9 @@ Player.prototype.bindMoveKeys = function () {
   key("right", function(){
     var pos = this.$player.position();
 
-    if(pos.left >= 100){
-      this.fall()
+    if(pos.left >= this.$platform.width() - 15){
+      this.$player.animate.bind( {left: pos.left + 10}, 70, "linear" );
+      setTimeout(this.fall.bind(this), 20)
     } else {
       this.$player.animate( {left: pos.left + 10}, 70, "linear" );
     }
@@ -36,11 +34,10 @@ Player.prototype.fall = function () {
   charIsFalling = true;
 
   this.$player.animate(
-    {marginTop : (this.$player.parent().height() - this.$player.height() - this.$player.position().top + 5) + 'px'},
+    {marginTop : (this.$player.parent().height() - this.$player.height() - this.$player.position().top) + 'px'},
     700
   )
 };
-
 
 window.Player = Player;
 module.exports = Player;

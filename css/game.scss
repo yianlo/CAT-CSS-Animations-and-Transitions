@@ -6,9 +6,19 @@
 }
 
 #player{
-  position: absolute;
+  position: relative;
+
   background: url(cat.png) no-repeat;
   width: 120px;
   height: 100px;
+  margin: 0 0 -10px -25px;
   background-size: contain;
+}
+
+.platform{
+  position: absolute;
+  top: 95px;
+  width: 200px;
+  height: 10px;
+  border: 1px solid black;
 }

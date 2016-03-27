@@ -64,17 +64,22 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Player = __webpack_require__(3);
+	var Platform = __webpack_require__(4);
 	
 	function Game($view) {
 	  this.$view = $view;
-	  this.addPlayer();
+	  this.populateEls();
 	};
 	
-	Game.prototype.addPlayer = function(){
+	Game.prototype.populateEls = function(){
 	  var player = $("<div>").attr('id', 'player');
+	  var platform1 = $("<div>").attr('id', 'platform1').addClass('platform');
 	
 	  this.$view.append(player);
-	  this.player = new Player(player);
+	  this.$view.append(platform1);
+	
+	  this.player = new Player(player, platform1);
+	  this.platform1 = new Platform(platform1);
 	};
 	
 	
@@ -85,14 +90,11 @@
 /* 3 */
 /***/ function(module, exports) {
 
-	function Player($player) {
+	function Player($player, $platform) {
 	  this.$player = $player;
-	  this.pos = 0;
-	  this.bindMoveKeys();
+	  this.$platform = $platform
 	
-	  if (this.$player.position().left > 50){
-	    this.fall();
-	  }
+	  this.bindMoveKeys();
 	}
 	
 	Player.prototype.bindMoveKeys = function () {
@@ -103,8 +105,9 @@
 	  key("right", function(){
 	    var pos = this.$player.position();
 	
-	    if(pos.left >= 100){
-	      this.fall()
+	    if(pos.left >= this.$platform.width() - 15){
+	      this.$player.animate.bind( {left: pos.left + 10}, 70, "linear" );
+	      setTimeout(this.fall.bind(this), 20)
 	    } else {
 	      this.$player.animate( {left: pos.left + 10}, 70, "linear" );
 	    }
@@ -123,14 +126,24 @@
 	  charIsFalling = true;
 	
 	  this.$player.animate(
-	    {marginTop : (this.$player.parent().height() - this.$player.height() - this.$player.position().top + 5) + 'px'},
+	    {marginTop : (this.$player.parent().height() - this.$player.height() - this.$player.position().top) + 'px'},
 	    700
 	  )
 	};
 	
-	
 	window.Player = Player;
 	module.exports = Player;
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	function Platform($platform) {
+	  this.$platform = $platform;
+	}
+	
+	module.exports = Platform;
 
 
 /***/ }
