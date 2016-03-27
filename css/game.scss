@@ -1,0 +1,14 @@
+#view{
+  border: 1px solid black;
+  height: 300px;
+  width: 800px;
+  position: relative;
+}
+
+#player{
+  position: absolute;
+  background: url(cat.png) no-repeat;
+  width: 120px;
+  height: 100px;
+  background-size: contain;
+}
