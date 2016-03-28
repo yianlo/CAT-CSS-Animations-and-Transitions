@@ -56,7 +56,7 @@
 	
 	var Game = __webpack_require__(216);
 	var Intro = __webpack_require__(217);
-	var Level1 = __webpack_require__(221);
+	var Level1 = __webpack_require__(222);
 	// var Level2 = require('./components/level2');
 	// var Level3 = require('./components/level3');
 	// var Level4 = require('./components/level4');
@@ -24793,8 +24793,8 @@
 	'use strict';
 	
 	var React = __webpack_require__(1),
-	    Player = __webpack_require__(219),
-	    Platform = __webpack_require__(222);
+	    Player = __webpack_require__(218),
+	    Platform = __webpack_require__(219);
 	
 	var Intro = React.createClass({
 	  displayName: 'Intro',
@@ -24872,28 +24872,6 @@
 
 /***/ },
 /* 218 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var React = __webpack_require__(1);
-	
-	var Cat = React.createClass({
-	  displayName: "Cat",
-	
-	  getInitialState: function getInitialState() {
-	    return { direction: "right" };
-	  },
-	
-	  render: function render() {
-	    return React.createElement("div", { className: "player", ref: "player", style: this.props.style });
-	  }
-	});
-	
-	module.exports = Cat;
-
-/***/ },
-/* 219 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -25008,7 +24986,71 @@
 	module.exports = Player;
 
 /***/ },
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1),
+	    Cat = __webpack_require__(220),
+	    Door = __webpack_require__(221);
+	
+	var Platform = React.createClass({
+	  displayName: 'Platform',
+	
+	  renderCat: function renderCat() {
+	    if (this.props.starting) {
+	      return React.createElement(Cat, null);
+	    }
+	  },
+	
+	  renderDoor: function renderDoor() {
+	    if (this.props.ending) {
+	      return React.createElement(Door, { upArrowDisplay: this.props.upArrowDisplay });
+	    }
+	  },
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'platform' },
+	      React.createElement(
+	        'p',
+	        null,
+	        this.props.text
+	      ),
+	      this.renderCat(),
+	      this.renderDoor()
+	    );
+	  }
+	});
+	
+	module.exports = Platform;
+
+/***/ },
 /* 220 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	
+	var Cat = React.createClass({
+	  displayName: "Cat",
+	
+	  getInitialState: function getInitialState() {
+	    return { direction: "right" };
+	  },
+	
+	  render: function render() {
+	    return React.createElement("div", { className: "player", ref: "player", style: this.props.style });
+	  }
+	});
+	
+	module.exports = Cat;
+
+/***/ },
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25038,14 +25080,14 @@
 	module.exports = Door;
 
 /***/ },
-/* 221 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1),
-	    Player = __webpack_require__(219),
-	    Platform = __webpack_require__(222);
+	    Player = __webpack_require__(218),
+	    Platform = __webpack_require__(219);
 	
 	var Level1 = React.createClass({
 	  displayName: 'Level1',
@@ -25141,48 +25183,6 @@
 	});
 	
 	module.exports = Level1;
-
-/***/ },
-/* 222 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1),
-	    Cat = __webpack_require__(218),
-	    Door = __webpack_require__(220);
-	
-	var Platform = React.createClass({
-	  displayName: 'Platform',
-	
-	  renderCat: function renderCat() {
-	    if (this.props.starting) {
-	      return React.createElement(Cat, null);
-	    }
-	  },
-	
-	  renderDoor: function renderDoor() {
-	    if (this.props.ending) {
-	      return React.createElement(Door, { upArrowDisplay: this.props.upArrowDisplay });
-	    }
-	  },
-	
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      { className: 'platform' },
-	      React.createElement(
-	        'p',
-	        null,
-	        this.props.text
-	      ),
-	      this.renderCat(),
-	      this.renderDoor()
-	    );
-	  }
-	});
-	
-	module.exports = Platform;
 
 /***/ }
 /******/ ]);
