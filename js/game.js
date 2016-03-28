@@ -2,8 +2,8 @@ var Player = require("./player");
 var Platform = require("./platform");
 
 function Game() {
-  this.$player = $(".player");
-  this.$door = $(".door");
+  this.$player = new Player;
+  this.$door = new Door;
 };
 
 Game.prototype.bindKeys = function () {

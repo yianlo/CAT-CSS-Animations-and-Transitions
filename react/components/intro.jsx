@@ -1,7 +1,39 @@
 var React = require('react'),
+    Player = require('../../js/player'),
     Platform = require('./platform');
-    
+
 var Intro = React.createClass({
+  contextTypes: {
+    nextLevel: React.PropTypes.func
+  },
+
+  componentDidMount: function() {
+    this.player= new Player();
+    document.addEventListener("keydown", this.handleLevelComplete)
+  },
+
+  componentWillUnmount: function(){
+    document.removeEventListener("keydown", this.handleLevelComplete, false);
+  },
+
+  checkCatAtDoor: function(){
+    var playerDiv = $(".player");
+    var doorDiv = $(".door");
+
+    return (
+      playerDiv.position().left > doorDiv.position().left &&
+      playerDiv.position().left + 50 < doorDiv.position().left + doorDiv.width() &&
+      playerDiv.position().top - 14 < doorDiv.position().top
+    )
+  },
+
+  handleLevelComplete: function(e){
+    if(e.keyCode === 38 && this.checkCatAtDoor()){
+      alert("level complete!")
+      this.context.nextLevel(1)
+      return false;
+    }
+  },
 
   render: function() {
     return (
@@ -17,7 +49,8 @@ var Intro = React.createClass({
 
         <div className="view-container">
           <div className="view">
-            <Platform starting={true} ending={true}/>
+            <Platform starting={true} ending={true}
+              upArrowDisplay={{display: 'flex'}}/>
           </div>
         </div>
       </div>

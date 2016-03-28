@@ -7,29 +7,17 @@ var Game = React.createClass({
 
   childContextTypes: {
     checkCatAtDoor: React.PropTypes.func,
-    handleLevelComplete: React.PropTypes.string
+    nextLevel: React.PropTypes.func
   },
 
   getChildContext: function() {
     return {
       checkCatAtDoor: this.checkCatAtDoor,
-      handleLevelComplete: this.handleLevelComplete
+      nextLevel: this.nextLevel,
     }
   },
 
-  checkCatAtDoor: function(){
-    var player = $(".player");
-    var door = $(".door");
-
-    return (
-      player.position().left > door.position().left &&
-      player.position().left + 50 < door.position().left + door.width() &&
-      player.position().top - 14 === door.position().top
-    )
-  },
-
-  handleLevelComplete: function(levelNum){
-    alert('/level' + levelNum);
+  nextLevel: function(levelNum){
     this.context.router.replace('/level' + levelNum)
   },
 

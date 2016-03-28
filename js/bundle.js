@@ -24748,12 +24748,12 @@
 /* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	var React = __webpack_require__(1);
 	
 	var Game = React.createClass({
-	  displayName: "Game",
+	  displayName: 'Game',
 	
 	  contextTypes: {
 	    router: React.PropTypes.object.isRequired
@@ -24761,32 +24761,24 @@
 	
 	  childContextTypes: {
 	    checkCatAtDoor: React.PropTypes.func,
-	    handleLevelComplete: React.PropTypes.string
+	    nextLevel: React.PropTypes.func
 	  },
 	
 	  getChildContext: function getChildContext() {
 	    return {
 	      checkCatAtDoor: this.checkCatAtDoor,
-	      handleLevelComplete: this.handleLevelComplete
+	      nextLevel: this.nextLevel
 	    };
 	  },
 	
-	  checkCatAtDoor: function checkCatAtDoor() {
-	    var player = $(".player");
-	    var door = $(".door");
-	
-	    return player.position().left > door.position().left && player.position().left + 50 < door.position().left + door.width() && player.position().top - 14 === door.position().top;
-	  },
-	
-	  handleLevelComplete: function handleLevelComplete(levelNum) {
-	    alert('/level' + levelNum);
+	  nextLevel: function nextLevel(levelNum) {
 	    this.context.router.replace('/level' + levelNum);
 	  },
 	
 	  render: function render() {
 	    return React.createElement(
-	      "div",
-	      { className: "game" },
+	      'div',
+	      { className: 'game' },
 	      this.props.children
 	    );
 	  }
@@ -24801,11 +24793,39 @@
 	'use strict';
 	
 	var React = __webpack_require__(1),
+	    Player = __webpack_require__(219),
 	    Platform = __webpack_require__(222);
 	
 	var Intro = React.createClass({
 	  displayName: 'Intro',
 	
+	  contextTypes: {
+	    nextLevel: React.PropTypes.func
+	  },
+	
+	  componentDidMount: function componentDidMount() {
+	    this.player = new Player();
+	    document.addEventListener("keydown", this.handleLevelComplete);
+	  },
+	
+	  componentWillUnmount: function componentWillUnmount() {
+	    document.removeEventListener("keydown", this.handleLevelComplete, false);
+	  },
+	
+	  checkCatAtDoor: function checkCatAtDoor() {
+	    var playerDiv = $(".player");
+	    var doorDiv = $(".door");
+	
+	    return playerDiv.position().left > doorDiv.position().left && playerDiv.position().left + 50 < doorDiv.position().left + doorDiv.width() && playerDiv.position().top - 14 < doorDiv.position().top;
+	  },
+	
+	  handleLevelComplete: function handleLevelComplete(e) {
+	    if (e.keyCode === 38 && this.checkCatAtDoor()) {
+	      alert("level complete!");
+	      this.context.nextLevel(1);
+	      return false;
+	    }
+	  },
 	
 	  render: function render() {
 	    return React.createElement(
@@ -24840,7 +24860,8 @@
 	        React.createElement(
 	          'div',
 	          { className: 'view' },
-	          React.createElement(Platform, { starting: true, ending: true })
+	          React.createElement(Platform, { starting: true, ending: true,
+	            upArrowDisplay: { display: 'flex' } })
 	        )
 	      )
 	    );
@@ -24853,24 +24874,19 @@
 /* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
-	var React = __webpack_require__(1),
-	    Player = __webpack_require__(219);
+	var React = __webpack_require__(1);
 	
 	var Cat = React.createClass({
-	  displayName: 'Cat',
+	  displayName: "Cat",
 	
 	  getInitialState: function getInitialState() {
 	    return { direction: "right" };
 	  },
 	
-	  componentDidMount: function componentDidMount() {
-	    new Player();
-	  },
-	
 	  render: function render() {
-	    return React.createElement('div', { className: 'player', ref: 'player', style: this.props.style });
+	    return React.createElement("div", { className: "player", ref: "player", style: this.props.style });
 	  }
 	});
 	
@@ -24893,7 +24909,7 @@
 	Player.prototype.bindMoveKeys = function () {
 	  var player = this;
 	
-	  $(document).keydown(function (e) {
+	  document.addEventListener("keydown", function (e) {
 	    if (e.keyCode === 37) {
 	      if (player.firstStep) {
 	        player.turnLeft();
@@ -24901,7 +24917,7 @@
 	      }
 	
 	      player.moveLeft();
-	      return false;
+	      e.preventDefault();
 	    } else if (e.keyCode === 39) {
 	      if (player.firstStep) {
 	        player.turnRight();
@@ -24909,13 +24925,14 @@
 	      }
 	
 	      player.moveRight();
-	      return false;
+	      e.preventDefault();
 	    }
-	  });
+	  }.bind(this));
 	
-	  $(document).keyup(function (e) {
+	  document.addEventListener("keyup", function (e) {
 	    if (e.keyCode === 37 || e.keyCode === 39) {
 	      player.rest();
+	      e.preventDefault();
 	    }
 	  });
 	};
@@ -24957,7 +24974,7 @@
 	Player.prototype.moveLeft = function () {
 	  var pos = this.$player.position();
 	
-	  if (pos.left > 5) {
+	  if (pos.left > -25) {
 	    this.$player.animate({ left: pos.left - 10 }, 0.005, "linear");
 	  }
 	};
@@ -24965,7 +24982,7 @@
 	Player.prototype.moveRight = function () {
 	  var pos = this.$player.position();
 	
-	  if (this.$player.position().left <= this.$player.parent().width() - this.$player.width() / 2) {
+	  if (this.$player.position().left <= this.$player.parent().width() - this.$player.width() / 2 + 10) {
 	    this.$player.animate({ left: pos.left + 10 }, 0.005, "linear");
 	  }
 	};
@@ -24994,41 +25011,25 @@
 /* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var React = __webpack_require__(1);
 	
 	var Door = React.createClass({
-	  displayName: 'Door',
+	  displayName: "Door",
 	
 	  contextTypes: {
-	    checkCatAtDoor: React.PropTypes.func,
-	    handleLevelComplete: React.PropTypes.string
-	  },
-	
-	  getInitialState: function getInitialState() {
-	    return { upArrowDisplay: { display: 'none' } };
-	  },
-	
-	  componentDidMount: function componentDidMount() {
-	    document.addEventListener("keydown", function (e) {
-	      if (e.keyCode === 38 && this.context.checkCatAtDoor()) {
-	        this.context.handleLevelComplete(1);
-	      } else if ((e.keyCode === 37 || e.keyCode === 39) && this.context.checkCatAtDoor()) {
-	        this.setState({ upArrowDisplay: { display: 'flex' } });
-	      }
-	      false;
-	    }.bind(this));
+	    upArrowDisplay: React.PropTypes.object
 	  },
 	
 	  render: function render() {
 	    return React.createElement(
-	      'div',
-	      { className: 'door' },
+	      "div",
+	      { className: "door" },
 	      React.createElement(
-	        'div',
-	        { style: this.state.upArrowDisplay },
-	        React.createElement('i', { className: 'fa fa-caret-square-o-up' })
+	        "div",
+	        null,
+	        React.createElement("i", { className: "fa fa-caret-square-o-up", style: this.props.upArrowDisplay })
 	      )
 	    );
 	  }
@@ -25043,14 +25044,67 @@
 	'use strict';
 	
 	var React = __webpack_require__(1),
+	    Player = __webpack_require__(219),
 	    Platform = __webpack_require__(222);
 	
 	var Level1 = React.createClass({
 	  displayName: 'Level1',
 	
 	  contextTypes: {
-	    checkCatAtDoor: React.PropTypes.func,
-	    handleLevelComplete: React.PropTypes.string
+	    handleLevelComplete: React.PropTypes.func
+	  },
+	
+	  componentDidMount: function componentDidMount() {
+	    this.player = new Player();
+	    document.addEventListener("keydown", function (e) {
+	      if (e.keyCode === 38) {
+	        debugger;
+	      }
+	    }.bind(this));
+	  },
+	
+	  checkCatAtDoor: function checkCatAtDoor() {
+	    var playerDiv = $(".player");
+	    var doorDiv = $(".door");
+	
+	    return playerDiv.position().left > doorDiv.position().left && playerDiv.position().left + 50 < doorDiv.position().left + doorDiv.width() && playerDiv.position().top - 14 < doorDiv.position().top;
+	  },
+	
+	  renderTextEditor: function renderTextEditor() {
+	    return React.createElement(
+	      'div',
+	      { className: 'text-editor' },
+	      React.createElement(
+	        'div',
+	        { className: 'line-numbers' },
+	        '1',
+	        React.createElement('br', null),
+	        '2',
+	        React.createElement('br', null),
+	        '3',
+	        React.createElement('br', null),
+	        '4',
+	        React.createElement('br', null),
+	        '5',
+	        React.createElement('br', null),
+	        '6',
+	        React.createElement('br', null),
+	        '7',
+	        React.createElement('br', null),
+	        '8'
+	      ),
+	      React.createElement(
+	        'pre',
+	        { className: 'before' },
+	        '#platform1{'
+	      ),
+	      React.createElement('textarea', { className: 'code' }),
+	      React.createElement(
+	        'pre',
+	        { className: 'after' },
+	        '}'
+	      )
+	    );
 	  },
 	
 	  render: function render() {
@@ -25063,18 +25117,14 @@
 	        React.createElement(
 	          'h1',
 	          { className: 'title' },
-	          'CSS Animation Transitions'
+	          'Level 1: The Bridge'
 	        ),
 	        React.createElement(
 	          'p',
 	          null,
-	          'Hello! Welcome to the CSS Animation & Transitions or the CAT game!'
+	          'Oh no! Mr. Cat is now stuck on platform 1 and can\'t get to the door. Can you help Mr. Cat get to the door?'
 	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'To get started, try moving around Mr. Cat using the left and right arrow keys'
-	        )
+	        this.renderTextEditor()
 	      ),
 	      React.createElement(
 	        'div',
@@ -25113,7 +25163,7 @@
 	
 	  renderDoor: function renderDoor() {
 	    if (this.props.ending) {
-	      return React.createElement(Door, null);
+	      return React.createElement(Door, { upArrowDisplay: this.props.upArrowDisplay });
 	    }
 	  },
 	

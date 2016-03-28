@@ -29,9 +29,11 @@ html, body, #root, .game, .display-container {
   display: flex; }
 
 .text-box {
+  box-sizing: border-box;
   width: 40%;
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  padding: 20px 35px; }
 
 .view-container {
   position: relative;
@@ -118,6 +120,7 @@ html, body, #root, .game, .display-container {
   width: 100px;
   height: 100px; }
   .door .fa {
+    display: none;
     color: #444;
     animation: blinker 1.5s linear infinite;
     font-size: 35px;
@@ -155,5 +158,49 @@ html, body, #root, .game, .display-container {
 .level1 .view {
   display: flex;
   justify-content: space-around; }
+.level1 .platform {
+  display: flex;
+  top: 405px;
+  height: 30px;
+  justify-content: center;
+  align-items: center; }
+.level1 .player {
+  bottom: 33px; }
+.level1 .door {
+  bottom: 30px; }
+.level1 .text-editor {
+  height: 260px;
+  position: relative;
+  padding: 10px 10px 10px 40px;
+  background-color: #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  font-family: 'Source Code Pro', monospace; }
+  .level1 .text-editor .line-numbers {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px 6px;
+    text-align: right;
+    background-color: #999;
+    color: #D5D5D5; }
+  .level1 .text-editor pre {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #aaa;
+    margin: 0; }
+  .level1 .text-editor .code {
+    height: 24px;
+    display: block;
+    width: calc(100% - 16px);
+    height: 24px;
+    margin-left: 16px;
+    border: none;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 16px;
+    outline: none;
+    resize: none;
+    overflow: auto; }
 
 /*# sourceMappingURL=game.css.map */

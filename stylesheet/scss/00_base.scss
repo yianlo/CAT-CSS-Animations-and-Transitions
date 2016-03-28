@@ -15,15 +15,6 @@ $platform-height: 16px;
 	100% { background-position: -380.61px 0;}
 }
 
-//
-
-// @-webkit-keyframes idling {
-// 	0% { background-position: 0 0; }
-// 	33% { background-position: 0 0; }
-// 	66% { background-position: 0 0; }
-// 	100% { background-position: -380.61px -333px; }
-// }
-
 @mixin filter($filter-type,$filter-amount) {
   -webkit-filter: $filter-type+unquote('(#{$filter-amount})');
   -moz-filter: $filter-type+unquote('(#{$filter-amount})');
@@ -46,9 +37,11 @@ html, body, #root, .game, .display-container{
 }
 
 .text-box{
+	box-sizing: border-box;
   width: 40%;
   display: flex;
   flex-direction: column;
+	padding: 20px 35px;
 }
 
 .view-container{
@@ -138,6 +131,7 @@ html, body, #root, .game, .display-container{
   height: 100px;
 
   .fa{
+		display: none;
     color: #444;
     animation: blinker 1.5s linear infinite;
 

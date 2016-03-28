@@ -1,14 +1,8 @@
-var React = require('react'),
-    Player = require('../../js/player')
-
+var React = require('react');
 
 var Cat = React.createClass({
   getInitialState: function(){
     return {direction: "right"};
-  },
-
-  componentDidMount: function() {
-    new Player();
   },
 
   render: function() {

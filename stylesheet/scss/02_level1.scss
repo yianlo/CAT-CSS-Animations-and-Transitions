@@ -1,7 +1,66 @@
+$platform-height: 30px;
 
 .level1{
   .view{
     display: flex;
     justify-content: space-around;
+  }
+
+  .platform{
+    display: flex;
+    top: 405px;
+    height: $platform-height;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .player{
+    bottom: 33px;
+  }
+
+  .door{
+    bottom: $platform-height;
+  }
+
+  .text-editor{
+    height: 260px;
+    position: relative;
+    padding: 10px 10px 10px 40px;
+    background-color: #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    font-family: 'Source Code Pro', monospace;
+
+    .line-numbers {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 10px 6px;
+      text-align: right;
+      background-color: #999;
+      color: #D5D5D5;
+    }
+
+    pre{
+      font-family: 'Source Code Pro', monospace;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #aaa;
+      margin: 0;
+    }
+
+    .code{
+      height: 24px;
+      display: block;
+      width: calc(100% - 16px);
+      height: 24px;
+      margin-left: 16px;
+      border: none;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 16px;
+      outline: none;
+      resize: none;
+      overflow: auto;
+    }
   }
 }

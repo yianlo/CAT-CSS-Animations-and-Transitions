@@ -8,7 +8,7 @@ var Platform = React.createClass({
   },
 
   renderDoor: function(){
-    if( this.props.ending ){ return <Door/> }
+    if( this.props.ending ){ return <Door upArrowDisplay={this.props.upArrowDisplay}/> }
   },
 
   render: function() {

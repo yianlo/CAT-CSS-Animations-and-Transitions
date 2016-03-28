@@ -9,7 +9,7 @@ function Player() {
 Player.prototype.bindMoveKeys = function () {
   var player = this;
 
-  $(document).keydown(function(e){
+  document.addEventListener("keydown", function(e){
     if(e.keyCode === 37){
       if (player.firstStep){
         player.turnLeft();
@@ -17,7 +17,7 @@ Player.prototype.bindMoveKeys = function () {
       }
 
       player.moveLeft();
-      return false;
+      e.preventDefault();
     } else if (e.keyCode === 39){
       if (player.firstStep){
         player.turnRight();
@@ -25,13 +25,14 @@ Player.prototype.bindMoveKeys = function () {
       }
 
       player.moveRight();
-      return false;
+      e.preventDefault();
     }
-  });
+  }.bind(this));
 
-  $(document).keyup(function(e){
+  document.addEventListener("keyup", function(e){
     if(e.keyCode === 37 || e.keyCode === 39){
       player.rest();
+      e.preventDefault();
     }
   });
 };
@@ -73,7 +74,7 @@ Player.prototype.walk = function () {
 Player.prototype.moveLeft = function () {
   var pos = this.$player.position();
 
-  if ( pos.left > 5){
+  if ( pos.left > -25 ){
     this.$player.animate( {left: pos.left - 10}, 0.005, "linear");
   }
 };
@@ -81,7 +82,7 @@ Player.prototype.moveLeft = function () {
 Player.prototype.moveRight = function () {
   var pos = this.$player.position();
 
-  if (this.$player.position().left <= (this.$player.parent().width() - this.$player.width() / 2)){
+  if (this.$player.position().left <= (this.$player.parent().width() - this.$player.width() / 2 + 10)){
     this.$player.animate( {left: pos.left + 10}, 0.005, "linear" );
   }
 };
