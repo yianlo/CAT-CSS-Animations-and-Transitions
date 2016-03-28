@@ -10,7 +10,7 @@
     "test": "test"
   },
   "keywords": [],
-  "author": "",
+  "author": "Yian Lo",
   "license": "ISC",
 
   "dependencies": {
@@ -22,5 +22,10 @@
     "react-dom": "^0.14.7",
     "react-router": "^2.0.0",
     "webpack": "^1.12.13"
+  },
+
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
