@@ -1,43 +1,85 @@
-function Player($player, $platform) {
-  this.$player = $player;
-  this.$platform = $platform
+function Player() {
+  
+  this.$player = $(".player");
+  this.direction = "right"
 
+  this.resting();
   this.bindMoveKeys();
 }
 
 Player.prototype.bindMoveKeys = function () {
-  key("left", function(){
-    this.$player.animate( {left: this.$player.position().left - 10}, 70, "linear" );
+  var player = this;
+
+  key("left", this.moveLeft.bind(this));
+  key("right", this.moveRight.bind(this));
+
+
+  $(document).keydown(function(e){
+    this.walk();
   }.bind(this));
 
-  key("right", function(){
-    var pos = this.$player.position();
-
-    if(pos.left >= this.$platform.width() - 15){
-      this.$player.animate.bind( {left: pos.left + 10}, 70, "linear" );
-      setTimeout(this.fall.bind(this), 20)
-    } else {
-      this.$player.animate( {left: pos.left + 10}, 70, "linear" );
-    }
+  $(document).keyup(function(e){
+    this.resting();
   }.bind(this));
-  //
-  // key("up", function(){
-  //   this.$player.animate( {top: this.$player.position().top - 10}, 70, "linear" );
-  // }.bind(this));
-  //
-  // key("down", function(){
-  //   this.$player.animate( {top: this.$player.position().top + 10}, 70, "linear" );
-  // }.bind(this));
+};
+
+Player.prototype.resting = function () {
+  this.$player.css('background-image', 'url(./stylesheet/images/idle.png)');
+
+  this.$player.animateSprite({
+    fps: 6,
+    loop: true,
+    animations: {
+        walk: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    },
+  })
+};
+
+Player.prototype.walk = function () {
+  this.$player.css('background-image', 'url(./stylesheet/images/walk.png)');
+
+  this.$player.animateSprite({
+    fps: 20,
+    loop: true,
+    animations: {
+        walk: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    },
+  })
+};
+
+Player.prototype.moveLeft = function () {
+  if(this.direction === "right"){
+    this.$player.addClass("left");
+    this.direction = "left"
+  }
+
+  if ( this.$player.position().left > 5){
+    this.$player.animate( {left: this.$player.position().left - 10}, 0.5, "linear");
+  }
+
+  return false
+};
+
+Player.prototype.moveRight = function () {
+  var pos = this.$player.position();
+
+  if(this.direction === "left"){
+    this.$player.removeClass("left");
+    this.direction = "right"
+  }
+
+  if (this.$player.position().left <= (this.$player.parent().width() - this.$player.width() / 2)){
+    this.$player.animate( {left: pos.left + 10}, 0.5, "linear" );
+  }
+
+  return false
 };
 
 Player.prototype.fall = function () {
-  charIsFalling = true;
-
   this.$player.animate(
-    {marginTop : (this.$player.parent().height() - this.$player.height() - this.$player.position().top) + 'px'},
+    {marginTop: (this.$player.parent().height() - this.$player.height() - this.$player.position().top) + 'px'},
     700
   )
 };
 
-window.Player = Player;
 module.exports = Player;

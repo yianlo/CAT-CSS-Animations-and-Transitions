@@ -1,0 +1,159 @@
+$platform-height: 16px;
+
+@keyframes animatedBackground {
+	from { background-position: 0 0; }
+	to { background-position: 20% 0; }
+}
+
+@mixin filter($filter-type,$filter-amount) {
+  -webkit-filter: $filter-type+unquote('(#{$filter-amount})');
+  -moz-filter: $filter-type+unquote('(#{$filter-amount})');
+  -ms-filter: $filter-type+unquote('(#{$filter-amount})');
+  -o-filter: $filter-type+unquote('(#{$filter-amount})');
+  filter: $filter-type+unquote('(#{$filter-amount})');
+}
+
+@keyframes blinker {
+  50% { opacity: 0.0; }
+}
+
+html, body, #root, .game, .display-container{
+  height: 100%;
+  width: 100%;
+}
+
+.display-container{
+  display: flex;
+}
+
+.text-box{
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+}
+
+.view-container{
+	position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 60%;
+
+	min-height: 620px;
+	min-width: 820px;
+}
+
+.view-container:after{
+  content: "";
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(102, 229, 255, 0.5) ), url('../images/sky.jpg');
+  background-size: 150% 150%;
+  background-position: center;
+  overflow:hidden;
+
+  @include filter(blur, 8px);
+  @include filter(contrast, 50%);
+  @include filter(brightness, 150%);
+
+  -webkit-filter: blur(8px) contrast(50%) brightness(150%);
+
+  top: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -100;
+
+	width: 100%;
+}
+
+.view{
+  height: 600px;
+  width: 800px;
+
+	min-height: 600px;
+	min-width: 800px;
+
+  position: relative;
+
+  box-shadow: 0 0 50px #000;
+}
+
+.view:after {
+	min-height: 600px;
+	min-width: 800px;
+
+  content: "";
+  background: linear-gradient(to right, rgba(10, 10, 10, 0.6), rgba(102, 229, 255, 0.5) ), url('../images/sky.jpg');
+  background-size: contain;
+  background-repeat: repeat-x;
+
+  @include filter(contrast, 70%);
+  @include filter(brightness, 130%);
+
+  -webkit-filter: contrast(70%) brightness(130%);
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+  animation: animatedBackground 2.5s linear infinite alternate;
+}
+
+.door{
+  position: absolute;
+  right: 50px;
+  bottom: $platform-height;
+
+  background: rgba(107, 157, 174, 0.85);
+
+  border: 4px solid rgba(215, 237, 244, 0.3);
+  border-bottom: none;
+  box-shadow: 3px 0 3px rgba(107, 157, 174, 0.8);
+
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+
+  width: 100px;
+  height: 100px;
+
+  .fa{
+    color: #444;
+    animation: blinker 1.5s linear infinite;
+
+    font-size: 35px;
+    position: absolute;
+    left: 32px;
+    top: -40px;
+  }
+}
+
+.platform{
+  flex: none;
+  position: relative;
+  top: 95px;
+  width: 200px;
+  height: $platform-height;
+
+	background: #f2f2f2;
+}
+
+.player{
+  z-index: 500;
+  position: absolute;
+  bottom: $platform-height;
+
+  left: 50px;
+
+	background-size: 20% 20%;
+  background: url('../images/idle.png') no-repeat;
+  width: 126.87px;
+  height: 111px;
+  margin: 0 0 -10px -25px;
+  // background-size: contain;
+}
+
+.player.left{
+  transform: scaleX(-1);
+}

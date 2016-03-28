@@ -1,14 +1,33 @@
-var path = require('path');
+var path = require("path");
+
 module.exports = {
-  entry: {
-    app: ["./js/main.js"]
-  },
+  context: __dirname,
+  entry: "./react/cssAnimationsTransitions.jsx",
   output: {
     path: path.join(__dirname, 'js'),
-    publicPath: '/js/',
-    filename: 'bundle.js',
-    devtoolModuleFilenameTemplate: '[resourcePath]',
-    devtoolFallbackModuleFilenameTemplate: '[resourcePath]?[hash]'
+    filename: "bundle.js"
+  },
+  resolve: {
+    extensions: ["", ".js", ".jsx"]
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'babel',
+        query: {
+          presets: ['react', 'es2015']
+        }
+      },
+      {
+        test: /\.node$/,
+        loader: "node-loader"
+      }
+    ]
   },
   devtool: 'source-maps',
+  resolve: {
+    extensions: ["", ".js", ".jsx" ]
+  }
 };
