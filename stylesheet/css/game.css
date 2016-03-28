@@ -3,6 +3,21 @@
     background-position: 0 0; }
   to {
     background-position: 20% 0; } }
+@keyframes idling {
+  0% {
+    background-position: 0 222px; }
+  33.3% {
+    background-position: -380.61px 222px; }
+  44.4% {
+    background-position: 0 111px; }
+  66.6% {
+    background-position: -380.61px 111px; }
+  77.7% {
+    background-position: 0 0; }
+  77.7% {
+    background-position: -380.61px 0; }
+  100% {
+    background-position: -380.61px 0; } }
 @keyframes blinker {
   50% {
     opacity: 0.0; } }
@@ -123,7 +138,6 @@ html, body, #root, .game, .display-container {
   position: absolute;
   bottom: 16px;
   left: 50px;
-  background-size: 20% 20%;
   background: url("../images/idle.png") no-repeat;
   width: 126.87px;
   height: 111px;

@@ -1,45 +1,68 @@
 function Player() {
-  
   this.$player = $(".player");
   this.direction = "right"
 
-  this.resting();
+  this.rest();
   this.bindMoveKeys();
 }
 
 Player.prototype.bindMoveKeys = function () {
   var player = this;
 
-  key("left", this.moveLeft.bind(this));
-  key("right", this.moveRight.bind(this));
-
-
   $(document).keydown(function(e){
-    this.walk();
-  }.bind(this));
+    if(e.keyCode === 37){
+      if (player.firstStep){
+        player.turnLeft();
+        player.startWalking();
+      }
+
+      player.moveLeft();
+      return false;
+    } else if (e.keyCode === 39){
+      if (player.firstStep){
+        player.turnRight();
+        player.startWalking();
+      }
+
+      player.moveRight();
+      return false;
+    }
+  });
 
   $(document).keyup(function(e){
-    this.resting();
-  }.bind(this));
+    if(e.keyCode === 37 || e.keyCode === 39){
+      player.rest();
+    }
+  });
 };
 
-Player.prototype.resting = function () {
+Player.prototype.startWalking = function () {
+  this.changeToWalk();
+  this.walk();
+  this.firstStep = false;
+};
+
+Player.prototype.rest = function () {
   this.$player.css('background-image', 'url(./stylesheet/images/idle.png)');
 
   this.$player.animateSprite({
     fps: 6,
     loop: true,
     animations: {
-        walk: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        rest: [0, 1, 2, 3, 4, 5, 6, 7, 8]
     },
   })
+
+  this.firstStep = true;
+};
+
+Player.prototype.changeToWalk = function () {
+  this.$player.css('background-image', 'url(./stylesheet/images/walk.png)');
 };
 
 Player.prototype.walk = function () {
-  this.$player.css('background-image', 'url(./stylesheet/images/walk.png)');
-
   this.$player.animateSprite({
-    fps: 20,
+    fps: 25,
     loop: true,
     animations: {
         walk: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -48,31 +71,33 @@ Player.prototype.walk = function () {
 };
 
 Player.prototype.moveLeft = function () {
-  if(this.direction === "right"){
-    this.$player.addClass("left");
-    this.direction = "left"
-  }
+  var pos = this.$player.position();
 
-  if ( this.$player.position().left > 5){
-    this.$player.animate( {left: this.$player.position().left - 10}, 0.5, "linear");
+  if ( pos.left > 5){
+    this.$player.animate( {left: pos.left - 10}, 0.005, "linear");
   }
-
-  return false
 };
 
 Player.prototype.moveRight = function () {
   var pos = this.$player.position();
 
+  if (this.$player.position().left <= (this.$player.parent().width() - this.$player.width() / 2)){
+    this.$player.animate( {left: pos.left + 10}, 0.005, "linear" );
+  }
+};
+
+Player.prototype.turnLeft = function () {
+  if(this.direction === "right"){
+    this.$player.addClass("left");
+    this.direction = "left";
+  }
+};
+
+Player.prototype.turnRight = function () {
   if(this.direction === "left"){
     this.$player.removeClass("left");
     this.direction = "right"
   }
-
-  if (this.$player.position().left <= (this.$player.parent().width() - this.$player.width() / 2)){
-    this.$player.animate( {left: pos.left + 10}, 0.5, "linear" );
-  }
-
-  return false
 };
 
 Player.prototype.fall = function () {

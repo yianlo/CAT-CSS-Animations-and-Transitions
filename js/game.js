@@ -6,6 +6,10 @@ function Game() {
   this.$door = $(".door");
 };
 
+Game.prototype.bindKeys = function () {
+
+};
+
 Game.prototype.checklevelComplete = function () {
   key("up", function(){ return this.checkCatAtDoor() }.bind(this));
 };
