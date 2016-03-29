@@ -1,6 +1,7 @@
-function Player() {
+function Player(width = null) {
   this.$player = $(".player");
   this.direction = "right"
+  this.width = width || this.$player.parent().width();
 
   this.rest();
   this.bindMoveKeys();
@@ -82,7 +83,7 @@ Player.prototype.moveLeft = function () {
 Player.prototype.moveRight = function () {
   var pos = this.$player.position();
 
-  if (this.$player.position().left <= (this.$player.parent().width() - this.$player.width() / 2 + 10)){
+  if (this.$player.position().left <= (this.width - this.$player.width() / 2 + 10)){
     this.$player.animate( {left: pos.left + 10}, 0.005, "linear" );
   }
 };

@@ -1,4 +1,10 @@
 $platform-height: 30px;
+$code-color: rgba(0, 0, 0, 0.6);
+
+@keyframes wider-platform{
+  from{ width: 200px; }
+  to{ width: 400px; }
+}
 
 .level1{
   .view{
@@ -12,6 +18,21 @@ $platform-height: 30px;
     height: $platform-height;
     justify-content: center;
     align-items: center;
+
+    position: absolute;
+  }
+
+  .platform1{
+    left: 100px;
+  }
+
+  .platform2{
+    left: 500px;
+  }
+
+  .platform1.animate{
+    animation: wider-platform 1.5s linear;
+    width: 400px;
   }
 
   .player{
@@ -22,8 +43,15 @@ $platform-height: 30px;
     bottom: $platform-height;
   }
 
+  .text-editor.one{
+    height: 152px;
+  }
+
+  .text-editor.two{
+    height: 208px;
+  }
+
   .text-editor{
-    height: 260px;
     position: relative;
     padding: 10px 10px 10px 40px;
     background-color: #ddd;
@@ -31,36 +59,59 @@ $platform-height: 30px;
     overflow: hidden;
     font-family: 'Source Code Pro', monospace;
 
+    .transform-container{
+      display: flex;
+
+
+
+      .input{
+        height: 24px;
+        display: block;
+        width: calc(100% - 16px);
+        height: 24px;
+        margin-left: 5px;
+        border: none;
+        font-family: 'Source Code Pro', monospace;
+        font-size: 16px;
+        outline: none;
+        resize: none;
+        overflow: auto;
+      }
+    }
+
     .line-numbers {
       position: absolute;
       top: 0;
       left: 0;
-      padding: 10px 6px;
+      padding: 11px 6px;
       text-align: right;
       background-color: #999;
       color: #D5D5D5;
+      line-height: 165%;
     }
 
     pre{
       font-family: 'Source Code Pro', monospace;
       font-size: 16px;
-      line-height: 1.5;
-      color: #aaa;
+      line-height: 1.62;
+      color: rgba(0, 0, 0, 0.5);
+      font-weight: 900;
       margin: 0;
     }
 
-    .code{
-      height: 24px;
-      display: block;
-      width: calc(100% - 16px);
-      height: 24px;
-      margin-left: 16px;
-      border: none;
+    pre.tab{
+      padding-left: 15px;
+    }
+  }
+
+  .text-box{
+    code{
+      padding: 0 8px;
+      background-color: rgba(150, 150, 150, 0.2);
       font-family: 'Source Code Pro', monospace;
-      font-size: 16px;
-      outline: none;
-      resize: none;
-      overflow: auto;
+      font-weight: 900;
+      color: $code-color;
+      white-space: nowrap;
     }
   }
 }

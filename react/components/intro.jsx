@@ -42,9 +42,13 @@ var Intro = React.createClass({
           <h1 className="title">CSS Animation Transitions</h1>
 
           <p>Welcome to the CSS Animation & Transitions or the CAT game!</p>
-          <p>To get started, try moving Mr. Cat to the door using the
+          <p>First, try moving Mr. Cat to the door using the
             <i className="fa fa-caret-square-o-left"></i> and
-            <i className="fa fa-caret-square-o-right"></i> arrow keys</p>
+            <i className="fa fa-caret-square-o-right"></i> arrow keys.
+
+            Once you get to the door, press the
+            <i className="fa fa-caret-square-o-up"></i> arrow key to complete the level!
+          </p>
         </div>
 
         <div className="view-container">

@@ -11,10 +11,14 @@ var Platform = React.createClass({
     if( this.props.ending ){ return <Door upArrowDisplay={this.props.upArrowDisplay}/> }
   },
 
+  renderText: function(){
+    if( this.props.text ){ return <p>{this.props.text}</p> }
+  },
+
   render: function() {
     return (
-      <div className="platform">
-        <p>{this.props.text}</p>
+      <div className={"platform " + this.props.className}>
+        { this.renderText() }
         { this.renderCat() }
         { this.renderDoor() }
       </div>

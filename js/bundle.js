@@ -24847,11 +24847,13 @@
 	        React.createElement(
 	          'p',
 	          null,
-	          'To get started, try moving Mr. Cat to the door using the',
+	          'First, try moving Mr. Cat to the door using the',
 	          React.createElement('i', { className: 'fa fa-caret-square-o-left' }),
 	          ' and',
 	          React.createElement('i', { className: 'fa fa-caret-square-o-right' }),
-	          ' arrow keys'
+	          ' arrow keys. Once you get to the door, press the',
+	          React.createElement('i', { className: 'fa fa-caret-square-o-up' }),
+	          ' arrow key to complete the level!'
 	        )
 	      ),
 	      React.createElement(
@@ -24877,8 +24879,11 @@
 	"use strict";
 	
 	function Player() {
+	  var width = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+	
 	  this.$player = $(".player");
 	  this.direction = "right";
+	  this.width = width || this.$player.parent().width();
 	
 	  this.rest();
 	  this.bindMoveKeys();
@@ -24960,7 +24965,7 @@
 	Player.prototype.moveRight = function () {
 	  var pos = this.$player.position();
 	
-	  if (this.$player.position().left <= this.$player.parent().width() - this.$player.width() / 2 + 10) {
+	  if (this.$player.position().left <= this.width - this.$player.width() / 2 + 10) {
 	    this.$player.animate({ left: pos.left + 10 }, 0.005, "linear");
 	  }
 	};
@@ -25010,15 +25015,21 @@
 	    }
 	  },
 	
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      { className: 'platform' },
-	      React.createElement(
+	  renderText: function renderText() {
+	    if (this.props.text) {
+	      return React.createElement(
 	        'p',
 	        null,
 	        this.props.text
-	      ),
+	      );
+	    }
+	  },
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: "platform " + this.props.className },
+	      this.renderText(),
 	      this.renderCat(),
 	      this.renderDoor()
 	    );
@@ -25087,22 +25098,35 @@
 	
 	var React = __webpack_require__(1),
 	    Player = __webpack_require__(218),
-	    Platform = __webpack_require__(219);
+	    Platform = __webpack_require__(219),
+	    LinkedStateMixin = __webpack_require__(223);
 	
 	var Level1 = React.createClass({
 	  displayName: 'Level1',
+	
+	  mixins: [LinkedStateMixin],
 	
 	  contextTypes: {
 	    handleLevelComplete: React.PropTypes.func
 	  },
 	
+	  getInitialState: function getInitialState() {
+	    return {
+	      fromKeyframe: "",
+	      toKeyframe: "",
+	      animation: ""
+	    };
+	  },
+	
 	  componentDidMount: function componentDidMount() {
-	    this.player = new Player();
+	    this.player = new Player(200);
 	    document.addEventListener("keydown", function (e) {
 	      if (e.keyCode === 38) {
 	        debugger;
 	      }
 	    }.bind(this));
+	
+	    this.refs.textBox.focus();
 	  },
 	
 	  checkCatAtDoor: function checkCatAtDoor() {
@@ -25112,10 +25136,88 @@
 	    return playerDiv.position().left > doorDiv.position().left && playerDiv.position().left + 50 < doorDiv.position().left + doorDiv.width() && playerDiv.position().top - 14 < doorDiv.position().top;
 	  },
 	
-	  renderTextEditor: function renderTextEditor() {
+	  renderInstructions: function renderInstructions() {
+	    if (this.state.fromKeyframe.replace(/\s/g, '') === "width:200px" && this.state.toKeyframe.replace(/\s/g, '') === "width:400px") {
+	      return this.renderSecondInstructions();
+	    } else {
+	      return this.renderFirstInstructions();
+	    }
+	  },
+	
+	  renderFirstInstructions: function renderFirstInstructions() {
 	    return React.createElement(
 	      'div',
-	      { className: 'text-editor' },
+	      { className: 'text-box' },
+	      React.createElement(
+	        'h1',
+	        { className: 'title' },
+	        'Level 1: The Bridge'
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Oh no! Mr. Cat is now stuck on platform 1 and can\'t get to the door. Can you help Mr. Cat get to the door? Try using CSS animations to help you!'
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'First, let\'s define the starting and ending frames or the ',
+	        React.createElement(
+	          'code',
+	          null,
+	          '@keyframes'
+	        ),
+	        ' of our animation. When you specify CSS styles inside the ',
+	        React.createElement(
+	          'code',
+	          null,
+	          '@keyframes'
+	        ),
+	        ' rule, the animation will gradually change ',
+	        React.createElement(
+	          'code',
+	          null,
+	          'from'
+	        ),
+	        ' the starting style ',
+	        React.createElement(
+	          'code',
+	          null,
+	          'to'
+	        ),
+	        ' the ending style.'
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'We\'ll start by animating the ',
+	        React.createElement(
+	          'code',
+	          null,
+	          'width'
+	        ),
+	        ' property of platform 1. In the text editor below, go from ',
+	        React.createElement(
+	          'code',
+	          null,
+	          'width: 200px'
+	        ),
+	        ' to ',
+	        React.createElement(
+	          'code',
+	          null,
+	          'width: 400px'
+	        ),
+	        '.'
+	      ),
+	      this.renderKeyframesEditor()
+	    );
+	  },
+	
+	  renderKeyframesEditor: function renderKeyframesEditor() {
+	    return React.createElement(
+	      'div',
+	      { className: 'text-editor one' },
 	      React.createElement(
 	        'div',
 	        { className: 'line-numbers' },
@@ -25138,9 +25240,148 @@
 	      React.createElement(
 	        'pre',
 	        { className: 'before' },
-	        '#platform1{'
+	        '@keyframes wider-platform {'
 	      ),
-	      React.createElement('textarea', { className: 'code' }),
+	      React.createElement(
+	        'div',
+	        { className: 'transform-container' },
+	        React.createElement(
+	          'pre',
+	          { className: 'tab from' },
+	          'from { '
+	        ),
+	        React.createElement('textarea', { ref: 'textBox', className: 'input',
+	          valueLink: this.linkState('fromKeyframe') }),
+	        React.createElement(
+	          'pre',
+	          { className: 'after tab' },
+	          '; }'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'transform-container' },
+	        React.createElement(
+	          'pre',
+	          { className: 'tab to' },
+	          'to { '
+	        ),
+	        React.createElement('textarea', { className: 'input',
+	          valueLink: this.linkState('toKeyframe') }),
+	        React.createElement(
+	          'pre',
+	          { className: 'after tab' },
+	          '; }'
+	        )
+	      ),
+	      React.createElement(
+	        'pre',
+	        { className: 'after' },
+	        '}'
+	      )
+	    );
+	  },
+	
+	  renderSecondInstructions: function renderSecondInstructions() {
+	    return React.createElement(
+	      'div',
+	      { className: 'text-box' },
+	      React.createElement(
+	        'h1',
+	        { className: 'title' },
+	        'Level 1: The Bridge'
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Great Job! Now that we have the animation\'s ',
+	        React.createElement(
+	          'code',
+	          null,
+	          '@keyframes'
+	        ),
+	        ' set up, we can go ahead and bind it to platform 1!'
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'In the textbox below, type in ',
+	        React.createElement(
+	          'code',
+	          null,
+	          'wider-platform'
+	        ),
+	        ', the name of our new ',
+	        React.createElement(
+	          'code',
+	          null,
+	          '@keyrames'
+	        ),
+	        'and watch the platfrom animate!'
+	      ),
+	      this.renderTextEditor()
+	    );
+	  },
+	
+	  renderTextEditor: function renderTextEditor() {
+	    return React.createElement(
+	      'div',
+	      { className: 'text-editor two' },
+	      React.createElement(
+	        'div',
+	        { className: 'line-numbers' },
+	        '1',
+	        React.createElement('br', null),
+	        '2',
+	        React.createElement('br', null),
+	        '3',
+	        React.createElement('br', null),
+	        '4',
+	        React.createElement('br', null),
+	        '5',
+	        React.createElement('br', null),
+	        '6',
+	        React.createElement('br', null),
+	        '7',
+	        React.createElement('br', null),
+	        '8'
+	      ),
+	      React.createElement(
+	        'pre',
+	        { className: 'before' },
+	        '@keyframes wider-platform {'
+	      ),
+	      React.createElement(
+	        'pre',
+	        { className: 'tab' },
+	        'from { width: 200px; }'
+	      ),
+	      React.createElement(
+	        'pre',
+	        { className: 'tab' },
+	        'to { width: 400px }'
+	      ),
+	      React.createElement(
+	        'pre',
+	        { className: 'before' },
+	        '}'
+	      ),
+	      React.createElement(
+	        'pre',
+	        { className: 'before', style: { paddingTop: 31 } },
+	        '#Platform1{'
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'transform-container' },
+	        React.createElement(
+	          'pre',
+	          { className: 'tab' },
+	          'animation:'
+	        ),
+	        React.createElement('textarea', { ref: 'textBox', className: 'input',
+	          valueLink: this.linkState('animation') })
+	      ),
 	      React.createElement(
 	        'pre',
 	        { className: 'after' },
@@ -25150,32 +25391,24 @@
 	  },
 	
 	  render: function render() {
+	    var animateClass = "";
+	    if (this.state.animation === "wider-platform") {
+	      animateClass = " animate";
+	      this.player = new Player(600);
+	    }
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'level1 display-container' },
-	      React.createElement(
-	        'div',
-	        { className: 'text-box' },
-	        React.createElement(
-	          'h1',
-	          { className: 'title' },
-	          'Level 1: The Bridge'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'Oh no! Mr. Cat is now stuck on platform 1 and can\'t get to the door. Can you help Mr. Cat get to the door?'
-	        ),
-	        this.renderTextEditor()
-	      ),
+	      this.renderInstructions(),
 	      React.createElement(
 	        'div',
 	        { className: 'view-container' },
 	        React.createElement(
 	          'div',
 	          { className: 'view' },
-	          React.createElement(Platform, { starting: true, text: 'Platform1' }),
-	          React.createElement(Platform, { ending: true })
+	          React.createElement(Platform, { className: "platform1" + animateClass, starting: true, text: '#Platform1' }),
+	          React.createElement(Platform, { className: 'platform2', ending: true })
 	        )
 	      )
 	    );
@@ -25183,6 +25416,236 @@
 	});
 	
 	module.exports = Level1;
+
+/***/ },
+/* 223 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(224);
+
+/***/ },
+/* 224 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule LinkedStateMixin
+	 * @typechecks static-only
+	 */
+	
+	'use strict';
+	
+	var ReactLink = __webpack_require__(225);
+	var ReactStateSetters = __webpack_require__(226);
+	
+	/**
+	 * A simple mixin around ReactLink.forState().
+	 */
+	var LinkedStateMixin = {
+	  /**
+	   * Create a ReactLink that's linked to part of this component's state. The
+	   * ReactLink will have the current value of this.state[key] and will call
+	   * setState() when a change is requested.
+	   *
+	   * @param {string} key state key to update. Note: you may want to use keyOf()
+	   * if you're using Google Closure Compiler advanced mode.
+	   * @return {ReactLink} ReactLink instance linking to the state.
+	   */
+	  linkState: function (key) {
+	    return new ReactLink(this.state[key], ReactStateSetters.createStateKeySetter(this, key));
+	  }
+	};
+	
+	module.exports = LinkedStateMixin;
+
+/***/ },
+/* 225 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactLink
+	 * @typechecks static-only
+	 */
+	
+	'use strict';
+	
+	/**
+	 * ReactLink encapsulates a common pattern in which a component wants to modify
+	 * a prop received from its parent. ReactLink allows the parent to pass down a
+	 * value coupled with a callback that, when invoked, expresses an intent to
+	 * modify that value. For example:
+	 *
+	 * React.createClass({
+	 *   getInitialState: function() {
+	 *     return {value: ''};
+	 *   },
+	 *   render: function() {
+	 *     var valueLink = new ReactLink(this.state.value, this._handleValueChange);
+	 *     return <input valueLink={valueLink} />;
+	 *   },
+	 *   _handleValueChange: function(newValue) {
+	 *     this.setState({value: newValue});
+	 *   }
+	 * });
+	 *
+	 * We have provided some sugary mixins to make the creation and
+	 * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
+	 */
+	
+	var React = __webpack_require__(2);
+	
+	/**
+	 * @param {*} value current value of the link
+	 * @param {function} requestChange callback to request a change
+	 */
+	function ReactLink(value, requestChange) {
+	  this.value = value;
+	  this.requestChange = requestChange;
+	}
+	
+	/**
+	 * Creates a PropType that enforces the ReactLink API and optionally checks the
+	 * type of the value being passed inside the link. Example:
+	 *
+	 * MyComponent.propTypes = {
+	 *   tabIndexLink: ReactLink.PropTypes.link(React.PropTypes.number)
+	 * }
+	 */
+	function createLinkTypeChecker(linkType) {
+	  var shapes = {
+	    value: typeof linkType === 'undefined' ? React.PropTypes.any.isRequired : linkType.isRequired,
+	    requestChange: React.PropTypes.func.isRequired
+	  };
+	  return React.PropTypes.shape(shapes);
+	}
+	
+	ReactLink.PropTypes = {
+	  link: createLinkTypeChecker
+	};
+	
+	module.exports = ReactLink;
+
+/***/ },
+/* 226 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactStateSetters
+	 */
+	
+	'use strict';
+	
+	var ReactStateSetters = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function (component, funcReturningState) {
+	    return function (a, b, c, d, e, f) {
+	      var partialState = funcReturningState.call(component, a, b, c, d, e, f);
+	      if (partialState) {
+	        component.setState(partialState);
+	      }
+	    };
+	  },
+	
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function (component, key) {
+	    // Memoize the setters.
+	    var cache = component.__keySetters || (component.__keySetters = {});
+	    return cache[key] || (cache[key] = createStateKeySetter(component, key));
+	  }
+	};
+	
+	function createStateKeySetter(component, key) {
+	  // Partial state is allocated outside of the function closure so it can be
+	  // reused with every call, avoiding memory allocation when this function
+	  // is called.
+	  var partialState = {};
+	  return function stateKeySetter(value) {
+	    partialState[key] = value;
+	    component.setState(partialState);
+	  };
+	}
+	
+	ReactStateSetters.Mixin = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateSetter(function(xValue) {
+	   *     return {x: xValue};
+	   *   })(1);
+	   *
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function (funcReturningState) {
+	    return ReactStateSetters.createStateSetter(this, funcReturningState);
+	  },
+	
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateKeySetter('x')(1);
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function (key) {
+	    return ReactStateSetters.createStateKeySetter(this, key);
+	  }
+	};
+	
+	module.exports = ReactStateSetters;
 
 /***/ }
 /******/ ]);
