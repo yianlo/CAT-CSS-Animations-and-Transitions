@@ -25729,7 +25729,6 @@
 	        ),
 	        ' should help you do the trick!'
 	      ),
-	      this.renderTextCode(),
 	      React.createElement(
 	        'p',
 	        null,
@@ -25795,7 +25794,7 @@
 	      React.createElement(
 	        'pre',
 	        { className: 'tab' },
-	        'to { bottom: 200px; }'
+	        'to { bottom: 300px; }'
 	      ),
 	      React.createElement(
 	        'pre',

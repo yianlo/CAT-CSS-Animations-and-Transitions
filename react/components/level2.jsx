@@ -45,8 +45,6 @@ var Level2 = React.createClass({
           specifying the <code>animation-duration</code> should help you do the trick!
         </p>
 
-        {this.renderTextCode()}
-
         <p>
           In the text editor below, type in <code>animation-duration: 5s</code>.
           The duration will always be a number with a time unit. The unit can either be
@@ -65,7 +63,7 @@ var Level2 = React.createClass({
         <div className="line-numbers">1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</div>
         <pre className="before">@keyframes moving &#123;</pre>
           <pre className="tab">from &#123; bottom: 0; &#125;</pre>
-          <pre className="tab">to &#123; bottom: 200px; &#125;</pre>
+          <pre className="tab">to &#123; bottom: 300px; &#125;</pre>
         <pre className="before">&#125;</pre>
 
         <pre className="before" style={{paddingTop: 31}}>#Elevator&#123;</pre>
