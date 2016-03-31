@@ -39,9 +39,9 @@ var Intro = React.createClass({
     return (
       <div className="intro display-container">
         <div className="text-box">
-          <h1 className="title">CSS Animation Transitions</h1>
+          <h1 className="title">CSS Animations & Transitions</h1>
 
-          <p>Welcome to the CSS Animation & Transitions or the CAT game!</p>
+          <p>Welcome to the CSS Animations & Transitions or the C.A.T. game!</p>
           <p>First, try moving Mr. Cat to the door using the
             <i className="fa fa-caret-square-o-left"></i> and
             <i className="fa fa-caret-square-o-right"></i> arrow keys.

@@ -57,7 +57,7 @@
 	var Game = __webpack_require__(216);
 	var Intro = __webpack_require__(217);
 	var Level1 = __webpack_require__(222);
-	// var Level2 = require('./components/level2');
+	var Level2 = __webpack_require__(227);
 	// var Level3 = require('./components/level3');
 	// var Level4 = require('./components/level4');
 	// var Level5 = require('./components/level5');
@@ -69,7 +69,8 @@
 	  Route,
 	  { path: '/', component: Game },
 	  React.createElement(IndexRoute, { component: Intro }),
-	  React.createElement(Route, { path: 'level1', component: Level1 })
+	  React.createElement(Route, { path: 'level1', component: Level1 }),
+	  React.createElement(Route, { path: 'level2', component: Level2 })
 	);
 	
 	$(function () {
@@ -24837,12 +24838,12 @@
 	        React.createElement(
 	          'h1',
 	          { className: 'title' },
-	          'CSS Animation Transitions'
+	          'CSS Animations & Transitions'
 	        ),
 	        React.createElement(
 	          'p',
 	          null,
-	          'Welcome to the CSS Animation & Transitions or the CAT game!'
+	          'Welcome to the CSS Animations & Transitions or the C.A.T. game!'
 	        ),
 	        React.createElement(
 	          'p',
@@ -25106,10 +25107,6 @@
 	
 	  mixins: [LinkedStateMixin],
 	
-	  contextTypes: {
-	    handleLevelComplete: React.PropTypes.func
-	  },
-	
 	  getInitialState: function getInitialState() {
 	    return {
 	      fromKeyframe: "",
@@ -25120,13 +25117,19 @@
 	
 	  componentDidMount: function componentDidMount() {
 	    this.player = new Player(200);
-	    document.addEventListener("keydown", function (e) {
-	      if (e.keyCode === 38) {
-	        debugger;
-	      }
-	    }.bind(this));
+	    document.addEventListener("keydown", this.handleLevelComplete.bind(this));
 	
 	    this.refs.textBox.focus();
+	  },
+	
+	  componentWillUnmount: function componentWillUnmount() {
+	    document.removeEventListener("keydown", this.handleLevelComplete, false);
+	  },
+	
+	  handleLevelComplete: function handleLevelComplete(e) {
+	    if (e.keyCode === 38) {
+	      debugger;
+	    }
 	  },
 	
 	  checkCatAtDoor: function checkCatAtDoor() {
@@ -25240,7 +25243,7 @@
 	      React.createElement(
 	        'pre',
 	        { className: 'before' },
-	        '@keyframes wider-platform {'
+	        '@keyframes widen-platform {'
 	      ),
 	      React.createElement(
 	        'div',
@@ -25285,7 +25288,7 @@
 	  renderSecondInstructions: function renderSecondInstructions() {
 	    return React.createElement(
 	      'div',
-	      { className: 'text-box' },
+	      { className: 'text-box two' },
 	      React.createElement(
 	        'h1',
 	        { className: 'title' },
@@ -25294,30 +25297,30 @@
 	      React.createElement(
 	        'p',
 	        null,
-	        'Great Job! Now that we have the animation\'s ',
+	        'Nice job! Now that we have the animation\'s ',
 	        React.createElement(
 	          'code',
 	          null,
 	          '@keyframes'
 	        ),
-	        ' set up, we can go ahead and bind it to platform 1!'
+	        ' set up, we can go ahead and add it to platform 1!'
 	      ),
 	      React.createElement(
 	        'p',
 	        null,
-	        'In the textbox below, type in ',
+	        'In the text editor below, add the name of our new ',
 	        React.createElement(
 	          'code',
 	          null,
-	          'wider-platform'
+	          '@keyframes'
 	        ),
-	        ', the name of our new ',
+	        'by typing in ',
 	        React.createElement(
 	          'code',
 	          null,
-	          '@keyrames'
+	          'animation-name: widen-platform'
 	        ),
-	        'and watch the platfrom animate!'
+	        '. Now watch the platform animate!'
 	      ),
 	      this.renderTextEditor()
 	    );
@@ -25349,7 +25352,7 @@
 	      React.createElement(
 	        'pre',
 	        { className: 'before' },
-	        '@keyframes wider-platform {'
+	        '@keyframes widen-platform {'
 	      ),
 	      React.createElement(
 	        'pre',
@@ -25373,13 +25376,8 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'transform-container' },
-	        React.createElement(
-	          'pre',
-	          { className: 'tab' },
-	          'animation:'
-	        ),
-	        React.createElement('textarea', { ref: 'textBox', className: 'input',
+	        { className: 'transform-container tab' },
+	        React.createElement('textarea', { className: 'input', ref: 'textBox',
 	          valueLink: this.linkState('animation') })
 	      ),
 	      React.createElement(
@@ -25392,7 +25390,7 @@
 	
 	  render: function render() {
 	    var animateClass = "";
-	    if (this.state.animation === "wider-platform") {
+	    if (this.state.animation.replace(/\s/g, '') === "animation-name:widen-platform") {
 	      animateClass = " animate";
 	      this.player = new Player(600);
 	    }
@@ -25646,6 +25644,215 @@
 	};
 	
 	module.exports = ReactStateSetters;
+
+/***/ },
+/* 227 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1),
+	    Player = __webpack_require__(218),
+	    Platform = __webpack_require__(219),
+	    LinkedStateMixin = __webpack_require__(223);
+	
+	var Level2 = React.createClass({
+	  displayName: 'Level2',
+	
+	  mixins: [LinkedStateMixin],
+	
+	  componentDidMount: function componentDidMount() {
+	    this.player = new Player(200);
+	    document.addEventListener("keydown", this.handleLevelComplete.bind(this));
+	
+	    this.refs.textBox.focus();
+	  },
+	
+	  componentWillUnmount: function componentWillUnmount() {
+	    document.removeEventListener("keydown", this.handleLevelComplete, false);
+	  },
+	
+	  handleLevelComplete: function handleLevelComplete(e) {
+	    if (e.keyCode === 38) {
+	      debugger;
+	    }
+	  },
+	
+	  getInitialState: function getInitialState() {
+	    return {
+	      fromKeyframe: "",
+	      toKeyframe: "",
+	      animation: ""
+	    };
+	  },
+	
+	  renderInstructions: function renderInstructions() {
+	    return React.createElement(
+	      'div',
+	      { className: 'text-box' },
+	      React.createElement(
+	        'h1',
+	        { className: 'title' },
+	        'Level 2: The Elevator'
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Great job getting Mr. Cat this far. This time to get to the door, Mr. Cat needs to take an elevator, but this elevator here is ',
+	        React.createElement(
+	          'code',
+	          null,
+	          'moving'
+	        ),
+	        ' way too fast! Can you help Mr. Cat slow down this ',
+	        React.createElement(
+	          'code',
+	          null,
+	          'moving'
+	        ),
+	        ' elevator?'
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Since ',
+	        React.createElement(
+	          'code',
+	          null,
+	          'moving'
+	        ),
+	        ' is a CSS animation added to the elevator (see below), specifying the ',
+	        React.createElement(
+	          'code',
+	          null,
+	          'animation-duration'
+	        ),
+	        ' should help you do the trick!'
+	      ),
+	      this.renderTextCode(),
+	      React.createElement(
+	        'p',
+	        null,
+	        'In the text editor below, type in ',
+	        React.createElement(
+	          'code',
+	          null,
+	          'animation-duration: 5s'
+	        ),
+	        '. The duration will always be a number with a time unit. The unit can either be',
+	        React.createElement(
+	          'code',
+	          null,
+	          's'
+	        ),
+	        ' for seconds or ',
+	        React.createElement(
+	          'code',
+	          null,
+	          'ms'
+	        ),
+	        ' for milliseconds. If you don\'t specify a unit, the duration property will not work!'
+	      ),
+	      this.renderTextEditor()
+	    );
+	  },
+	
+	  renderTextEditor: function renderTextEditor() {
+	    return React.createElement(
+	      'div',
+	      { className: 'text-editor', style: { height: 235 } },
+	      React.createElement(
+	        'div',
+	        { className: 'line-numbers' },
+	        '1',
+	        React.createElement('br', null),
+	        '2',
+	        React.createElement('br', null),
+	        '3',
+	        React.createElement('br', null),
+	        '4',
+	        React.createElement('br', null),
+	        '5',
+	        React.createElement('br', null),
+	        '6',
+	        React.createElement('br', null),
+	        '7',
+	        React.createElement('br', null),
+	        '8',
+	        React.createElement('br', null),
+	        '9'
+	      ),
+	      React.createElement(
+	        'pre',
+	        { className: 'before' },
+	        '@keyframes moving {'
+	      ),
+	      React.createElement(
+	        'pre',
+	        { className: 'tab' },
+	        'from { bottom: 0; }'
+	      ),
+	      React.createElement(
+	        'pre',
+	        { className: 'tab' },
+	        'to { bottom: 200px; }'
+	      ),
+	      React.createElement(
+	        'pre',
+	        { className: 'before' },
+	        '}'
+	      ),
+	      React.createElement(
+	        'pre',
+	        { className: 'before', style: { paddingTop: 31 } },
+	        '#Elevator{'
+	      ),
+	      React.createElement(
+	        'pre',
+	        { className: 'tab' },
+	        'animation-name: moving;'
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'transform-container tab' },
+	        React.createElement('textarea', { className: 'input', ref: 'textBox',
+	          valueLink: this.linkState('animation') })
+	      ),
+	      React.createElement(
+	        'pre',
+	        { className: 'after' },
+	        '}'
+	      )
+	    );
+	  },
+	
+	  render: function render() {
+	    var animateClass = "";
+	    if (this.state.animation.replace(/\s/g, '') === "animation-duration:5s") {
+	      animateClass = " slow";
+	      this.player = new Player(600);
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'level2 display-container' },
+	      this.renderInstructions(),
+	      React.createElement(
+	        'div',
+	        { className: 'view-container' },
+	        React.createElement(
+	          'div',
+	          { className: 'view' },
+	          React.createElement(Platform, { className: "platform1", starting: true }),
+	          React.createElement(Platform, { className: "platform-elevator" + animateClass, text: '#Elevator' }),
+	          React.createElement(Platform, { className: 'platform2', ending: true })
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Level2;
 
 /***/ }
 /******/ ]);

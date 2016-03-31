@@ -1,0 +1,67 @@
+.text-editor{
+  position: relative;
+  padding: 10px 10px 10px 40px;
+  background-color: #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  font-family: 'Source Code Pro', monospace;
+
+  .transform-container{
+    display: flex;
+
+    .input{
+      height: 24px;
+      display: block;
+      width: calc(100% - 16px);
+      height: 24px;
+      margin-left: 5px;
+      border: none;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 16px;
+      outline: none;
+      resize: none;
+      overflow: auto;
+    }
+  }
+
+  .line-numbers {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 11px 6px;
+    text-align: right;
+    background-color: #999;
+    color: #D5D5D5;
+    line-height: 165%;
+  }
+
+  pre{
+    font-family: 'Source Code Pro', monospace;
+    font-size: 16px;
+    line-height: 1.62;
+    color: rgba(0, 0, 0, 0.5);
+    font-weight: 900;
+    margin: 0;
+  }
+
+  pre.tab{
+    padding-left: 15px;
+  }
+
+  .transform-container.tab{
+    padding-left: 8px;
+  }
+}
+
+.text-box{
+  // animation: instructions-emerge 0.6s ease-in;
+
+  code{
+    padding: 0 8px;
+    background-color: rgba(150, 150, 150, 0.2);
+    font-family: 'Source Code Pro', monospace;
+    font-weight: 900;
+    color: $code-color;
+    white-space: nowrap;
+  }
+}

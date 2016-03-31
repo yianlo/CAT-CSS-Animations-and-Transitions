@@ -1,0 +1,27 @@
+@keyframes moving{
+  from{ top: 505px; }
+  to{ top: 205px; }
+}
+
+.level2{
+  .platform1{
+    left: 100px;
+    top: 405px;
+  }
+
+  .platform2{
+    left: 500px;
+    position: absolute;
+    top: 205px;
+  }
+
+  .platform-elevator{
+    left: 300px;
+    top: 505px;
+    animation: moving 0.6s linear 0s infinite alternate;
+  }
+
+  .platform-elevator.slow{
+    animation: moving 5s linear 0s infinite alternate;
+  }
+}

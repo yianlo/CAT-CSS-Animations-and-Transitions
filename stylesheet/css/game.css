@@ -17,14 +17,24 @@ div, p {
 .display-container {
   display: flex; }
 
+.text-editor {
+  margin-top: 25px; }
+
 .text-box {
   box-sizing: border-box;
   width: 40%;
   display: flex;
   flex-direction: column;
   padding: 20px 35px; }
+  .text-box h1 {
+    font-size: 28px; }
   .text-box p {
-    line-height: 200%; }
+    line-height: 190%;
+    font-size: 16.5px;
+    margin: 12px 0; }
+
+.text-box.two {
+  animation: instructions-emerge 0.5s ease-in; }
 
 .view-container {
   position: relative;
@@ -101,7 +111,7 @@ div, p {
 .door {
   position: absolute;
   right: 50px;
-  bottom: 16px;
+  bottom: 30px;
   background: rgba(107, 157, 174, 0.85);
   border: 4px solid rgba(215, 237, 244, 0.3);
   border-bottom: none;
@@ -120,11 +130,14 @@ div, p {
     top: -40px; }
 
 .platform {
+  display: flex;
   flex: none;
-  position: relative;
+  position: absolute;
   top: 95px;
   width: 200px;
-  height: 16px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
   background: url("../images/brick-platform.png") repeat;
   background-size: contain; }
   .platform p {
@@ -138,7 +151,7 @@ div, p {
 .player {
   z-index: 500;
   position: absolute;
-  bottom: 16px;
+  bottom: 30px;
   left: 50px;
   background: url("../images/idle.png") no-repeat;
   width: 126.87px;
@@ -159,16 +172,16 @@ div, p {
     width: 200px; }
   to {
     width: 400px; } }
+@keyframes instructions-emerge {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
 .level1 .view {
   display: flex;
   justify-content: space-around; }
 .level1 .platform {
-  display: flex;
-  top: 405px;
-  height: 30px;
-  justify-content: center;
-  align-items: center;
-  position: absolute; }
+  top: 405px; }
 .level1 .platform1 {
   left: 100px; }
 .level1 .platform2 {
@@ -184,16 +197,36 @@ div, p {
   height: 152px; }
 .level1 .text-editor.two {
   height: 208px; }
-.level1 .text-editor {
+
+@keyframes moving {
+  from {
+    top: 505px; }
+  to {
+    top: 205px; } }
+.level2 .platform1 {
+  left: 100px;
+  top: 405px; }
+.level2 .platform2 {
+  left: 500px;
+  position: absolute;
+  top: 205px; }
+.level2 .platform-elevator {
+  left: 300px;
+  top: 505px;
+  animation: moving 0.6s linear 0s infinite alternate; }
+.level2 .platform-elevator.slow {
+  animation: moving 5s linear 0s infinite alternate; }
+
+.text-editor {
   position: relative;
   padding: 10px 10px 10px 40px;
   background-color: #ddd;
   border-radius: 4px;
   overflow: hidden;
   font-family: 'Source Code Pro', monospace; }
-  .level1 .text-editor .transform-container {
+  .text-editor .transform-container {
     display: flex; }
-    .level1 .text-editor .transform-container .input {
+    .text-editor .transform-container .input {
       height: 24px;
       display: block;
       width: calc(100% - 16px);
@@ -205,7 +238,7 @@ div, p {
       outline: none;
       resize: none;
       overflow: auto; }
-  .level1 .text-editor .line-numbers {
+  .text-editor .line-numbers {
     position: absolute;
     top: 0;
     left: 0;
@@ -214,16 +247,19 @@ div, p {
     background-color: #999;
     color: #D5D5D5;
     line-height: 165%; }
-  .level1 .text-editor pre {
+  .text-editor pre {
     font-family: 'Source Code Pro', monospace;
     font-size: 16px;
     line-height: 1.62;
     color: rgba(0, 0, 0, 0.5);
     font-weight: 900;
     margin: 0; }
-  .level1 .text-editor pre.tab {
+  .text-editor pre.tab {
     padding-left: 15px; }
-.level1 .text-box code {
+  .text-editor .transform-container.tab {
+    padding-left: 8px; }
+
+.text-box code {
   padding: 0 8px;
   background-color: rgba(150, 150, 150, 0.2);
   font-family: 'Source Code Pro', monospace;

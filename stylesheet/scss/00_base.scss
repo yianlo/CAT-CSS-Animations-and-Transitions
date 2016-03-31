@@ -1,4 +1,4 @@
-$platform-height: 16px;
+$platform-height: 30px;
 $platform-font-color: #fcfcfc;
 
 @keyframes animatedBackground {
@@ -32,6 +32,10 @@ div, p{
   display: flex;
 }
 
+.text-editor{
+	margin-top: 25px;
+}
+
 .text-box{
 	box-sizing: border-box;
   width: 40%;
@@ -39,9 +43,19 @@ div, p{
   flex-direction: column;
 	padding: 20px 35px;
 
-	p{
-		line-height: 200%;
+	h1{
+		font-size: 28px;
 	}
+
+	p{
+		line-height: 190%;
+		font-size: 16.5px;
+		margin: 12px 0;
+	}
+}
+
+.text-box.two{
+	animation: instructions-emerge 0.5s ease-in;
 }
 
 .view-container{
@@ -143,11 +157,15 @@ div, p{
 }
 
 .platform{
+	display: flex;
   flex: none;
-  position: relative;
+  position: absolute;
   top: 95px;
   width: 200px;
   height: $platform-height;
+
+	justify-content: center;
+	align-items: center;
 
 	background: url('../images/brick-platform.png') repeat;
 	background-size: contain;

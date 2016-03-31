@@ -6,10 +6,6 @@ var React = require('react'),
 var Level1 = React.createClass({
   mixins: [LinkedStateMixin],
 
-  contextTypes: {
-    handleLevelComplete: React.PropTypes.func
-  },
-
   getInitialState: function(){
     return{
       fromKeyframe: "",
@@ -20,13 +16,19 @@ var Level1 = React.createClass({
 
   componentDidMount: function() {
     this.player= new Player(200);
-    document.addEventListener("keydown", function(e){
-      if(e.keyCode === 38){
-        debugger
-      }
-    }.bind(this))
+    document.addEventListener("keydown", this.handleLevelComplete.bind(this));
 
     this.refs.textBox.focus();
+  },
+
+  componentWillUnmount: function(){
+    document.removeEventListener("keydown", this.handleLevelComplete, false);
+  },
+
+  handleLevelComplete: function(e){
+    if(e.keyCode === 38){
+      debugger
+    }
   },
 
   checkCatAtDoor: function(){
@@ -79,7 +81,7 @@ var Level1 = React.createClass({
     return(
       <div className="text-editor one">
         <div className="line-numbers">1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8</div>
-        <pre className="before">@keyframes wider-platform &#123;</pre>
+        <pre className="before">@keyframes widen-platform &#123;</pre>
         <div className="transform-container">
           <pre className="tab from">from &#123; </pre>
           <textarea ref="textBox" className="input"
@@ -100,17 +102,17 @@ var Level1 = React.createClass({
 
   renderSecondInstructions: function(){
     return(
-      <div className="text-box">
+      <div className="text-box two">
         <h1 className="title">Level 1: The Bridge</h1>
         <p>
-          Great Job! Now that we have the animation's <code>@keyframes</code> set up,
-          we can go ahead and bind it to platform 1!
+          Nice job! Now that we have the animation's <code>@keyframes</code> set up,
+          we can go ahead and add it to platform 1!
         </p>
 
         <p>
-          In the textbox below, type in <code>wider-platform</code>,
-          the name of our new <code>@keyrames</code>
-          and watch the platfrom animate!
+          In the text editor below, add the name of our new <code>@keyframes</code>
+          by typing in <code>animation-name: widen-platform</code>.
+          Now watch the platform animate!
         </p>
         {this.renderTextEditor()}
       </div>
@@ -121,15 +123,14 @@ var Level1 = React.createClass({
     return(
       <div className="text-editor two">
         <div className="line-numbers">1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8</div>
-        <pre className="before">@keyframes wider-platform &#123;</pre>
+        <pre className="before">@keyframes widen-platform &#123;</pre>
           <pre className="tab">from &#123; width: 200px; &#125;</pre>
           <pre className="tab">to &#123; width: 400px &#125;</pre>
         <pre className="before">&#125;</pre>
 
         <pre className="before" style={{paddingTop: 31}}>#Platform1&#123;</pre>
-        <div className="transform-container">
-          <pre className="tab">animation:</pre>
-          <textarea ref="textBox" className="input"
+        <div className="transform-container tab">
+          <textarea className="input" ref="textBox"
             valueLink={this.linkState('animation')}/>
         </div>
         <pre className="after">&#125;</pre>
@@ -139,7 +140,7 @@ var Level1 = React.createClass({
 
   render: function() {
     var animateClass = ""
-    if(this.state.animation === "wider-platform"){
+    if(this.state.animation.replace(/\s/g, '') === "animation-name:widen-platform"){
       animateClass = " animate";
       this.player= new Player(600);
     }
