@@ -32,4 +32,4 @@ Teach `animation-duration` property by changing the duration on a fast moving el
 ##Future Features
 * Ramp level: using skew property
 * Obstacles/ Spike level: using display/ visibility property
-* End level that teaches "animation" which will take both animation-name and animation-duration
+* Final level for animations that teaches the `animation` property which will take both `animation-name` and `animation-duration`
