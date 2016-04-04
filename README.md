@@ -4,7 +4,7 @@
 
 Online platform game that teaches the basics of CSS animations and transitions.
 
-<sub>The current version is a demo game completed in one day. To find out more about future iterations and additional levels, please check out the Future Features section.<sub>
+The current version is a demo game completed in one day. To find out more about future iterations and additional levels, please check out the Future Features section.
 
 ##Features
 Object collision and game logic is dynamically computed in response to user inputs
