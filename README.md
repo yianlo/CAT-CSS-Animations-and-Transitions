@@ -4,20 +4,20 @@
 
 Online platform game that teaches the basics of CSS animations and transitions.
 
-The current version is a demo game completed in one day. To find out more about future iterations and additional levels, please check the Future Features section.
+^The current version is a demo game completed in one day. To find out more about future iterations and additional levels, please check out the Future Features section.^
 
 ##Features
-Object collision and game logic is dynamically computed in response to user input
+Object collision and game logic is dynamically computed in response to user inputs
 
 ###Intro
 ![intro]
 
 ###Level 1
-Teach `animation-name` property by adding a widen animation on platform to reach door
+Teach `animation-name` property by adding a `widen` animation on platform to reach door
 ![level1_start]![level1_end]
 
 ###Level 2
-Teach `animation-duration` property by changing the duration on a fast moving elevation
+Teach `animation-duration` property by changing the duration on a fast moving elevator
 ![level2_start]![level2_end]
 
 [intro]: ./screenshots/intro.png
