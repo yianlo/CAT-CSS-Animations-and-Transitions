@@ -25762,7 +25762,7 @@
 	
 	    if (this.state.animation.replace(/\s/g, '') === "animation-duration:5s") {
 	      if (playerDiv.position().left > 30.5 && playerDiv.position().left < 102) {
-	        alert("You won the game! Thank you for playing!\n(More levels to come. Checkout the GitHub page for more.)");
+	        alert("You won the game! Thank you for playing!\n\nMore levels to come. Checkout the GitHub page for more.");
 	        location.href = "https://github.com/yianlo/CAT-CSS-Animations-and-Transitions";
 	        return false;
 	      }
@@ -25910,9 +25910,11 @@
 	
 	  render: function render() {
 	    var animateClass = "";
+	    var upArrowDisplay = {};
 	    if (this.state.animation.replace(/\s/g, '') === "animation-duration:5s") {
 	      animateClass = " slow";
 	      this.player = new Player(200, true);
+	      upArrowDisplay = { display: 'flex' };
 	    }
 	
 	    return React.createElement(
@@ -25927,7 +25929,7 @@
 	          { className: 'view' },
 	          React.createElement(Platform, { className: "platform1", starting: true }),
 	          React.createElement(Platform, { className: "platform-elevator" + animateClass, text: '#Elevator' }),
-	          React.createElement(Platform, { className: 'platform2', ending: true })
+	          React.createElement(Platform, { className: 'platform2', ending: true, upArrowDisplay: upArrowDisplay })
 	        )
 	      )
 	    );

@@ -36,7 +36,7 @@ var Level2 = React.createClass({
 
     if(this.state.animation.replace(/\s/g, '') === "animation-duration:5s"){
       if(playerDiv.position().left > 30.5 && playerDiv.position().left < 102){
-        alert("You won the game! Thank you for playing!\n(More levels to come. Checkout the GitHub page for more.)")
+        alert("You won the game! Thank you for playing!\n\nMore levels to come. Checkout the GitHub page for more.")
         location.href = "https://github.com/yianlo/CAT-CSS-Animations-and-Transitions"
         return false;
       }
@@ -90,10 +90,12 @@ var Level2 = React.createClass({
   },
 
   render: function() {
-    var animateClass = ""
+    var animateClass = "";
+    var upArrowDisplay = {};
     if(this.state.animation.replace(/\s/g, '') === "animation-duration:5s"){
       animateClass = " slow";
       this.player= new Player(200, true);
+      upArrowDisplay = {display: 'flex'};
     }
 
     return (
@@ -104,7 +106,7 @@ var Level2 = React.createClass({
           <div className="view">
             <Platform className={"platform1"} starting={true}/>
             <Platform className={"platform-elevator" + animateClass} text="#Elevator"/>
-            <Platform className="platform2" ending={true}/>
+            <Platform className="platform2" ending={true} upArrowDisplay={upArrowDisplay}/>
           </div>
         </div>
       </div>
