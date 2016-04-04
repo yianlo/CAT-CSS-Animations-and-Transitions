@@ -24881,10 +24881,12 @@
 	
 	function Player() {
 	  var width = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+	  var switchPlatform = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 	
 	  this.$player = $(".player");
 	  this.direction = "right";
 	  this.width = width || this.$player.parent().width();
+	  this.switchPlatform = switchPlatform;
 	
 	  this.rest();
 	  this.bindMoveKeys();
@@ -24956,18 +24958,76 @@
 	};
 	
 	Player.prototype.moveLeft = function () {
-	  var pos = this.$player.position();
+	  var $player = this.$player;
 	
-	  if (pos.left > -25) {
-	    this.$player.animate({ left: pos.left - 10 }, 0.005, "linear");
+	  if (this.switchPlatform) {
+	    this.switchLeftPlatforms();
+	  }
+	
+	  if ($player.position().left > -25) {
+	    $player.animate({ left: $player.position().left - 15 }, 0.005, "linear");
+	  }
+	};
+	
+	Player.prototype.switchLeftPlatforms = function () {
+	  var $elevator = $(".platform-elevator");
+	  var $platform1 = $(".platform1");
+	
+	  if ($elevator.length > 0 && this.$player.parents('div.platform2').length > 0) {
+	    if (this.$player.position().left < -24) {
+	      var top = $elevator.position().top;
+	      if (top > 197 && top < 210) {
+	        this.$player.css("left", 165);
+	        this.$player.detach();
+	        $elevator.append(this.$player);
+	      }
+	    }
+	  } else if ($platform1.length > 0 && this.$player.parents('div.platform-elevator').length > 0) {
+	    if (this.$player.position().left < -24) {
+	      var top = $elevator.position().top;
+	      if (top > 400 && top < 413) {
+	        this.$player.css("left", 165);
+	        this.$player.detach();
+	        $platform1.append(this.$player);
+	      }
+	    }
 	  }
 	};
 	
 	Player.prototype.moveRight = function () {
-	  var pos = this.$player.position();
+	  var $player = this.$player;
 	
-	  if (this.$player.position().left <= this.width - this.$player.width() / 2 + 10) {
-	    this.$player.animate({ left: pos.left + 10 }, 0.005, "linear");
+	  if (this.switchPlatform) {
+	    this.switchRightPlatforms();
+	  }
+	
+	  if ($player.position().left <= this.width - $player.width() / 2 + 20) {
+	    $player.animate({ left: $player.position().left + 10 }, 0.005, "linear");
+	  }
+	};
+	
+	Player.prototype.switchRightPlatforms = function () {
+	  var $elevator = $(".platform-elevator");
+	  var $platform2 = $(".platform2");
+	
+	  if ($elevator.length > 0 && this.$player.parents('div.platform1').length > 0) {
+	    if (this.$player.position().left > 150) {
+	      var top = $elevator.position().top;
+	      if (top > 400 && top < 410) {
+	        this.$player.css("left", -25);
+	        this.$player.detach();
+	        $elevator.append(this.$player);
+	      }
+	    }
+	  } else if ($platform2.length > 0 && this.$player.parents('div.platform-elevator').length > 0) {
+	    if (this.$player.position().left > 150) {
+	      var top = $elevator.position().top;
+	      if (top > 200 && top < 210) {
+	        this.$player.css("left", -25);
+	        this.$player.detach();
+	        $platform2.append(this.$player);
+	      }
+	    }
 	  }
 	};
 	
@@ -25107,6 +25167,10 @@
 	
 	  mixins: [LinkedStateMixin],
 	
+	  contextTypes: {
+	    nextLevel: React.PropTypes.func
+	  },
+	
 	  getInitialState: function getInitialState() {
 	    return {
 	      fromKeyframe: "",
@@ -25117,7 +25181,7 @@
 	
 	  componentDidMount: function componentDidMount() {
 	    this.player = new Player(200);
-	    document.addEventListener("keydown", this.handleLevelComplete.bind(this));
+	    document.addEventListener("keydown", this.handleLevelComplete);
 	
 	    this.refs.textBox.focus();
 	  },
@@ -25128,15 +25192,20 @@
 	
 	  handleLevelComplete: function handleLevelComplete(e) {
 	    if (e.keyCode === 38) {
-	      debugger;
+	      this.checkCatAtDoor();
 	    }
 	  },
 	
 	  checkCatAtDoor: function checkCatAtDoor() {
 	    var playerDiv = $(".player");
-	    var doorDiv = $(".door");
 	
-	    return playerDiv.position().left > doorDiv.position().left && playerDiv.position().left + 50 < doorDiv.position().left + doorDiv.width() && playerDiv.position().top - 14 < doorDiv.position().top;
+	    if (this.state.animation.replace(/\s/g, '') === "animation-name:widen-platform") {
+	      if (playerDiv.position().left > 452 && playerDiv.position().left < 492.28) {
+	        alert("level complete!");
+	        this.context.nextLevel(2);
+	        return false;
+	      }
+	    }
 	  },
 	
 	  renderInstructions: function renderInstructions() {
@@ -25390,8 +25459,10 @@
 	
 	  render: function render() {
 	    var animateClass = "";
+	    var upArrowDisplay = {};
 	    if (this.state.animation.replace(/\s/g, '') === "animation-name:widen-platform") {
 	      animateClass = " animate";
+	      upArrowDisplay = { display: 'flex' };
 	      this.player = new Player(600);
 	    }
 	
@@ -25406,7 +25477,7 @@
 	          'div',
 	          { className: 'view' },
 	          React.createElement(Platform, { className: "platform1" + animateClass, starting: true, text: '#Platform1' }),
-	          React.createElement(Platform, { className: 'platform2', ending: true })
+	          React.createElement(Platform, { className: 'platform2', ending: true, upArrowDisplay: upArrowDisplay })
 	        )
 	      )
 	    );
@@ -25661,9 +25732,17 @@
 	
 	  mixins: [LinkedStateMixin],
 	
+	  getInitialState: function getInitialState() {
+	    return {
+	      fromKeyframe: "",
+	      toKeyframe: "",
+	      animation: ""
+	    };
+	  },
+	
 	  componentDidMount: function componentDidMount() {
 	    this.player = new Player(200);
-	    document.addEventListener("keydown", this.handleLevelComplete.bind(this));
+	    document.addEventListener("keydown", this.handleLevelComplete);
 	
 	    this.refs.textBox.focus();
 	  },
@@ -25674,16 +25753,20 @@
 	
 	  handleLevelComplete: function handleLevelComplete(e) {
 	    if (e.keyCode === 38) {
-	      debugger;
+	      this.checkCatAtDoor();
 	    }
 	  },
 	
-	  getInitialState: function getInitialState() {
-	    return {
-	      fromKeyframe: "",
-	      toKeyframe: "",
-	      animation: ""
-	    };
+	  checkCatAtDoor: function checkCatAtDoor() {
+	    var playerDiv = $(".player");
+	
+	    if (this.state.animation.replace(/\s/g, '') === "animation-duration:5s") {
+	      if (playerDiv.position().left > 30.5 && playerDiv.position().left < 102) {
+	        alert("You won the game! Thank you for playing!\n(More levels to come. Checkout the GitHub page for more.)");
+	        location.href = "https://github.com/yianlo/CAT-CSS-Animations-and-Transitions";
+	        return false;
+	      }
+	    }
 	  },
 	
 	  renderInstructions: function renderInstructions() {
@@ -25829,7 +25912,7 @@
 	    var animateClass = "";
 	    if (this.state.animation.replace(/\s/g, '') === "animation-duration:5s") {
 	      animateClass = " slow";
-	      this.player = new Player(600);
+	      this.player = new Player(200, true);
 	    }
 	
 	    return React.createElement(

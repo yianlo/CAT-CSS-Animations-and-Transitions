@@ -6,6 +6,10 @@ var React = require('react'),
 var Level1 = React.createClass({
   mixins: [LinkedStateMixin],
 
+  contextTypes: {
+    nextLevel: React.PropTypes.func
+  },
+
   getInitialState: function(){
     return{
       fromKeyframe: "",
@@ -16,7 +20,7 @@ var Level1 = React.createClass({
 
   componentDidMount: function() {
     this.player= new Player(200);
-    document.addEventListener("keydown", this.handleLevelComplete.bind(this));
+    document.addEventListener("keydown", this.handleLevelComplete);
 
     this.refs.textBox.focus();
   },
@@ -27,19 +31,20 @@ var Level1 = React.createClass({
 
   handleLevelComplete: function(e){
     if(e.keyCode === 38){
-      debugger
+      this.checkCatAtDoor()
     }
   },
 
   checkCatAtDoor: function(){
     var playerDiv = $(".player");
-    var doorDiv = $(".door");
 
-    return (
-      playerDiv.position().left > doorDiv.position().left &&
-      playerDiv.position().left + 50 < doorDiv.position().left + doorDiv.width() &&
-      playerDiv.position().top - 14 < doorDiv.position().top
-    )
+    if(this.state.animation.replace(/\s/g, '') === "animation-name:widen-platform"){
+      if(playerDiv.position().left > 452 && playerDiv.position().left < 492.28){
+        alert("level complete!")
+        this.context.nextLevel(2)
+        return false;
+      }
+    }
   },
 
   renderInstructions: function(){
@@ -139,9 +144,11 @@ var Level1 = React.createClass({
   },
 
   render: function() {
-    var animateClass = ""
+    var animateClass = "";
+    var upArrowDisplay = {};
     if(this.state.animation.replace(/\s/g, '') === "animation-name:widen-platform"){
       animateClass = " animate";
+      upArrowDisplay = {display: 'flex'};
       this.player= new Player(600);
     }
 
@@ -152,7 +159,7 @@ var Level1 = React.createClass({
         <div className="view-container">
           <div className="view">
             <Platform className={"platform1" + animateClass} starting={true} text="#Platform1"/>
-            <Platform className="platform2" ending={true}/>
+            <Platform className="platform2" ending={true} upArrowDisplay={upArrowDisplay}/>
           </div>
         </div>
       </div>

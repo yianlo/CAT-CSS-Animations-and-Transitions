@@ -6,9 +6,17 @@ var React = require('react'),
 var Level2 = React.createClass({
   mixins: [LinkedStateMixin],
 
+  getInitialState: function(){
+    return{
+      fromKeyframe: "",
+      toKeyframe: "",
+      animation: ""
+    }
+  },
+
   componentDidMount: function() {
     this.player= new Player(200);
-    document.addEventListener("keydown", this.handleLevelComplete.bind(this));
+    document.addEventListener("keydown", this.handleLevelComplete);
 
     this.refs.textBox.focus();
   },
@@ -19,15 +27,19 @@ var Level2 = React.createClass({
 
   handleLevelComplete: function(e){
     if(e.keyCode === 38){
-      debugger
+      this.checkCatAtDoor()
     }
   },
 
-  getInitialState: function(){
-    return{
-      fromKeyframe: "",
-      toKeyframe: "",
-      animation: ""
+  checkCatAtDoor: function(){
+    var playerDiv = $(".player");
+
+    if(this.state.animation.replace(/\s/g, '') === "animation-duration:5s"){
+      if(playerDiv.position().left > 30.5 && playerDiv.position().left < 102){
+        alert("You won the game! Thank you for playing!\n(More levels to come. Checkout the GitHub page for more.)")
+        location.href = "https://github.com/yianlo/CAT-CSS-Animations-and-Transitions"
+        return false;
+      }
     }
   },
 
@@ -81,7 +93,7 @@ var Level2 = React.createClass({
     var animateClass = ""
     if(this.state.animation.replace(/\s/g, '') === "animation-duration:5s"){
       animateClass = " slow";
-      this.player= new Player(600);
+      this.player= new Player(200, true);
     }
 
     return (
