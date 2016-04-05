@@ -10,12 +10,6 @@ var Game = require('./components/game');
 var Intro = require('./components/intro');
 var Level1 = require('./components/level1');
 var Level2 = require('./components/level2');
-// var Level3 = require('./components/level3');
-// var Level4 = require('./components/level4');
-// var Level5 = require('./components/level5');
-// var Level6 = require('./components/level6');
-// var Level7 = require('./components/level7');
-// var LevelEnd = require('./components/levelEnd');
 
 var routes = (
   <Route path="/" component={Game}>

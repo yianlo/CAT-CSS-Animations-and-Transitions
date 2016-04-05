@@ -1,13 +1,24 @@
 var React = require('react'),
     Player = require('../../js/player'),
-    Platform = require('./platform');
+    Platform = require('./platform'),
+    Modal = require('boron/DropModal');
 
 var Intro = React.createClass({
   contextTypes: {
     nextLevel: React.PropTypes.func
   },
 
+  showModal: function(){
+      this.refs.modal.show();
+   },
+
+   hideModal: function(){
+      this.refs.modal.hide();
+   },
+
   componentDidMount: function() {
+    this.showModal();
+
     this.player= new Player();
     document.addEventListener("keydown", this.handleLevelComplete)
   },
@@ -38,6 +49,16 @@ var Intro = React.createClass({
   render: function() {
     return (
       <div className="intro display-container">
+        <div>
+          <Modal ref="modal" className="modal">
+              <h2>Learn to use <span className="highlight">CSS animations</span> by playing the <span className="highlight">C.A.T.</span> (CSS Animations & Transitions) demo game.
+              Click the Play button to get started!</h2>
+              <div className="button-container">
+                <button onClick={this.hideModal}>Play Game!</button>
+              </div>
+          </Modal>
+        </div>
+
         <div className="text-box">
           <h1 className="title">CSS Animations & Transitions</h1>
 

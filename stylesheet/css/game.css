@@ -166,6 +166,24 @@ div, p {
 .intro .platform {
   width: 90%;
   top: 250px; }
+.intro .modal {
+  padding: 20px 50px;
+  border-radius: 5px; }
+  .intro .modal h2 {
+    font-weight: 200;
+    font-size: 20px;
+    line-height: 36px; }
+    .intro .modal h2 .highlight {
+      color: #0093B2; }
+  .intro .modal .button-container {
+    text-align: center; }
+    .intro .modal .button-container button {
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 16.6px; }
+    .intro .modal .button-container button:hover {
+      cursor: pointer;
+      background: rgba(0, 63, 76, 0.5); }
 
 @keyframes wider-platform {
   from {

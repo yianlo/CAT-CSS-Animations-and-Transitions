@@ -7,4 +7,34 @@
     width: 90%;
     top: 250px;
   }
+
+  .modal{
+    padding: 20px 50px;
+    border-radius: 5px;
+
+    h2{
+      font-weight: 200;
+      font-size: 20px;
+      line-height: 36px;
+
+      .highlight{
+        color: #0093B2;
+      }
+    }
+
+    .button-container{
+      text-align: center;
+
+      button{
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 16.6px;
+      }
+
+      button:hover{
+        cursor: pointer;
+        background: rgba(0, 63, 76, 0.5)
+      }
+    }
+  }
 }

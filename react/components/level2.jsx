@@ -61,7 +61,7 @@ var Level2 = React.createClass({
           In the text editor below, type in <code>animation-duration: 5s</code>.
           The duration will always be a number with a time unit. The unit can either be
           <code>s</code> for seconds or <code>ms</code> for milliseconds.
-          If you don't specify a unit, the duration property will not work!
+          If you don&#39;t specify a unit, the duration property will not work!
         </p>
 
         {this.renderTextEditor()}

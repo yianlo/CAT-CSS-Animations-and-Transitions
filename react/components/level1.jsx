@@ -61,19 +61,19 @@ var Level1 = React.createClass({
       <div className="text-box">
         <h1 className="title">Level 1: The Bridge</h1>
         <p>
-          Oh no! Mr. Cat is now stuck on platform 1 and can't get to the door.
+          Oh no! Mr. Cat is now stuck on platform 1 and can&#39;t get to the door.
           Can you help Mr. Cat get to the door?
           Try using CSS animations to help you!
         </p>
 
         <p>
-          First, let's define the starting and ending frames or the <code>@keyframes</code> of our animation.
+          First, let&#39;s define the starting and ending frames or the <code>@keyframes</code> of our animation.
           When you specify CSS styles inside the <code>@keyframes</code> rule, the animation will
           gradually change <code>from</code> the starting style <code>to</code> the ending style.
         </p>
 
         <p>
-          We'll start by animating the <code>width</code> property of platform 1.
+          We&#39;ll start by animating the <code>width</code> property of platform 1.
           In the text editor below, go from <code>width: 200px</code> to <code>width: 400px</code>.
         </p>
 
@@ -110,7 +110,7 @@ var Level1 = React.createClass({
       <div className="text-box two">
         <h1 className="title">Level 1: The Bridge</h1>
         <p>
-          Nice job! Now that we have the animation's <code>@keyframes</code> set up,
+          Nice job! Now that we have the animation&#39;s <code>@keyframes</code> set up,
           we can go ahead and add it to platform 1!
         </p>
 
