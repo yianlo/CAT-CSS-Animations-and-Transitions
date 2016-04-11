@@ -25011,7 +25011,7 @@
 	  }
 	
 	  if ($player.position().left > -28) {
-	    $player.animate({ left: $player.position().left - 15 }, 0.005, "linear");
+	    $player.animate({ left: $player.position().left - 14 }, 0.005, "linear");
 	  }
 	};
 	
@@ -25023,7 +25023,7 @@
 	  }
 	
 	  if ($player.position().left <= this.width - $player.width() / 2 + 19) {
-	    $player.animate({ left: $player.position().left + 16 }, 0.005, "linear");
+	    $player.animate({ left: $player.position().left + 14 }, 0.005, "linear");
 	  }
 	};
 	
