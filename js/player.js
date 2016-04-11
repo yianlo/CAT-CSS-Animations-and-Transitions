@@ -12,26 +12,30 @@ Player.prototype.bindMoveKeys = function () {
   var player = this;
 
   document.addEventListener("keydown", function(e){
+    if ($(e.target).is('input, textarea')) { return; }
+
     if(e.keyCode === 37){
+      player.moveLeft();
+
       if (player.firstStep){
         player.turnLeft();
         player.startWalking();
       }
-
-      player.moveLeft();
       e.preventDefault();
     } else if (e.keyCode === 39){
+      player.moveRight();
+
       if (player.firstStep){
         player.turnRight();
         player.startWalking();
       }
-
-      player.moveRight();
       e.preventDefault();
     }
   }.bind(this));
 
   document.addEventListener("keyup", function(e){
+    if ($(e.target).is('input, textarea')) { return; }
+
     if(e.keyCode === 37 || e.keyCode === 39){
       player.rest();
       e.preventDefault();
@@ -40,8 +44,8 @@ Player.prototype.bindMoveKeys = function () {
 };
 
 Player.prototype.startWalking = function () {
-  this.changeToWalk();
   this.walk();
+  this.changeToWalk();
   this.firstStep = false;
 };
 
@@ -75,11 +79,20 @@ Player.prototype.walk = function () {
 
 Player.prototype.moveLeft = function () {
   var $player = this.$player;
-
   if (this.switchPlatform){ this.switchLeftPlatforms() }
 
-  if ( $player.position().left > -25 ){
+  if ( $player.position().left > -28 ){
     $player.animate( {left: $player.position().left - 15}, 0.005, "linear");
+  }
+};
+
+Player.prototype.moveRight = function () {
+  var $player = this.$player;
+
+  if (this.switchPlatform){ this.switchRightPlatforms() }
+
+  if ($player.position().left <= (this.width - $player.width() / 2 + 19)){
+    $player.animate( {left: $player.position().left + 16}, 0.005, "linear" );
   }
 };
 
@@ -105,16 +118,6 @@ Player.prototype.switchLeftPlatforms = function () {
         $platform1.append(this.$player);
       }
     }
-  }
-};
-
-Player.prototype.moveRight = function () {
-  var $player = this.$player;
-
-  if (this.switchPlatform){ this.switchRightPlatforms() }
-
-  if ($player.position().left <= (this.width - $player.width() / 2 + 20)){
-    $player.animate( {left: $player.position().left + 10}, 0.005, "linear" );
   }
 };
 

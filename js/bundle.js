@@ -24935,26 +24935,34 @@
 	  var player = this;
 	
 	  document.addEventListener("keydown", function (e) {
+	    if ($(e.target).is('input, textarea')) {
+	      return;
+	    }
+	
 	    if (e.keyCode === 37) {
+	      player.moveLeft();
+	
 	      if (player.firstStep) {
 	        player.turnLeft();
 	        player.startWalking();
 	      }
-	
-	      player.moveLeft();
 	      e.preventDefault();
 	    } else if (e.keyCode === 39) {
+	      player.moveRight();
+	
 	      if (player.firstStep) {
 	        player.turnRight();
 	        player.startWalking();
 	      }
-	
-	      player.moveRight();
 	      e.preventDefault();
 	    }
 	  }.bind(this));
 	
 	  document.addEventListener("keyup", function (e) {
+	    if ($(e.target).is('input, textarea')) {
+	      return;
+	    }
+	
 	    if (e.keyCode === 37 || e.keyCode === 39) {
 	      player.rest();
 	      e.preventDefault();
@@ -24963,8 +24971,8 @@
 	};
 	
 	Player.prototype.startWalking = function () {
-	  this.changeToWalk();
 	  this.walk();
+	  this.changeToWalk();
 	  this.firstStep = false;
 	};
 	
@@ -24998,13 +25006,24 @@
 	
 	Player.prototype.moveLeft = function () {
 	  var $player = this.$player;
-	
 	  if (this.switchPlatform) {
 	    this.switchLeftPlatforms();
 	  }
 	
-	  if ($player.position().left > -25) {
+	  if ($player.position().left > -28) {
 	    $player.animate({ left: $player.position().left - 15 }, 0.005, "linear");
+	  }
+	};
+	
+	Player.prototype.moveRight = function () {
+	  var $player = this.$player;
+	
+	  if (this.switchPlatform) {
+	    this.switchRightPlatforms();
+	  }
+	
+	  if ($player.position().left <= this.width - $player.width() / 2 + 19) {
+	    $player.animate({ left: $player.position().left + 16 }, 0.005, "linear");
 	  }
 	};
 	
@@ -25030,18 +25049,6 @@
 	        $platform1.append(this.$player);
 	      }
 	    }
-	  }
-	};
-	
-	Player.prototype.moveRight = function () {
-	  var $player = this.$player;
-	
-	  if (this.switchPlatform) {
-	    this.switchRightPlatforms();
-	  }
-	
-	  if ($player.position().left <= this.width - $player.width() / 2 + 20) {
-	    $player.animate({ left: $player.position().left + 10 }, 0.005, "linear");
 	  }
 	};
 	
@@ -25791,6 +25798,7 @@
 	var React = __webpack_require__(1),
 	    Player = __webpack_require__(218),
 	    Platform = __webpack_require__(219),
+	    Modal = __webpack_require__(222),
 	    LinkedStateMixin = __webpack_require__(232);
 	
 	var Level1 = React.createClass({
@@ -25845,12 +25853,15 @@
 	    } else {
 	      return this.renderFirstInstructions();
 	    }
+	
+	    this.refs.textBox.focus();
 	  },
 	
 	  renderFirstInstructions: function renderFirstInstructions() {
 	    return React.createElement(
 	      'div',
 	      { className: 'text-box' },
+	      React.createElement('div', { className: 'modal', ref: 'textBoxModal', onClick: this.showGameViewModal }),
 	      React.createElement(
 	        'h1',
 	        { className: 'title' },
@@ -25989,6 +26000,7 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'text-box two' },
+	      React.createElement('div', { className: 'modal', ref: 'textBoxModal', onClick: this.showGameViewModal }),
 	      React.createElement(
 	        'h1',
 	        { className: 'title' },
@@ -26088,12 +26100,25 @@
 	    );
 	  },
 	
+	  hideGameViewModal: function hideGameViewModal() {
+	    this.refs.viewModal.style.display = "none";
+	    this.refs.textBoxModal.style.display = "block";
+	    this.refs.gameView.focus();
+	  },
+	
+	  showGameViewModal: function showGameViewModal() {
+	    this.refs.viewModal.style.display = "block";
+	    this.refs.textBoxModal.style.display = "none";
+	    this.refs.textBox.focus();
+	  },
+	
 	  render: function render() {
 	    var animateClass = "";
 	    var upArrowDisplay = {};
 	    if (this.state.animation.replace(/\s/g, '') === "animation-name:widen-platform") {
 	      animateClass = " animate";
 	      upArrowDisplay = { display: 'flex' };
+	      this.hideGameViewModal();
 	      this.player = new Player(600);
 	    }
 	
@@ -26103,13 +26128,14 @@
 	      this.renderInstructions(),
 	      React.createElement(
 	        'div',
-	        { className: 'view-container' },
+	        { className: 'view-container', onClick: this.hideGameViewModal },
 	        React.createElement(
 	          'div',
-	          { className: 'view' },
+	          { className: 'view', ref: 'gameView' },
 	          React.createElement(Platform, { className: "platform1" + animateClass, starting: true, text: '#Platform1' }),
 	          React.createElement(Platform, { className: 'platform2', ending: true, upArrowDisplay: upArrowDisplay })
-	        )
+	        ),
+	        React.createElement('div', { className: 'modal', ref: 'viewModal' })
 	      )
 	    );
 	  }
@@ -26382,6 +26408,18 @@
 	    document.removeEventListener("keydown", this.handleLevelComplete, false);
 	  },
 	
+	  hideGameViewModal: function hideGameViewModal() {
+	    this.refs.viewModal.style.display = "none";
+	    this.refs.textBoxModal.style.display = "block";
+	    this.refs.gameView.focus();
+	  },
+	
+	  showGameViewModal: function showGameViewModal() {
+	    this.refs.viewModal.style.display = "block";
+	    this.refs.textBoxModal.style.display = "none";
+	    this.refs.textBox.focus();
+	  },
+	
 	  handleLevelComplete: function handleLevelComplete(e) {
 	    if (e.keyCode === 38) {
 	      this.checkCatAtDoor();
@@ -26392,10 +26430,12 @@
 	    var playerDiv = $(".player");
 	
 	    if (this.state.animation.replace(/\s/g, '') === "animation-duration:5s") {
-	      if (playerDiv.position().left > 30.5 && playerDiv.position().left < 102) {
-	        alert("You won the game! Thank you for playing!\n\nMore levels to come. Checkout the GitHub page for more.");
-	        location.href = "https://github.com/yianlo/CAT-CSS-Animations-and-Transitions";
-	        return false;
+	      if (playerDiv.parents('div.platform2').length > 0) {
+	        if (playerDiv.position().left > 30.5 && playerDiv.position().left < 102) {
+	          alert("You won the game! Thank you for playing!\n\nMore levels to come. Checkout the GitHub page for more.");
+	          location.href = "https://github.com/yianlo/CAT-CSS-Animations-and-Transitions";
+	          return false;
+	        }
 	      }
 	    }
 	  },
@@ -26404,6 +26444,7 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'text-box' },
+	      React.createElement('div', { className: 'modal', ref: 'textBoxModal', onClick: this.showGameViewModal }),
 	      React.createElement(
 	        'h1',
 	        { className: 'title' },
@@ -26546,6 +26587,8 @@
 	      animateClass = " slow";
 	      this.player = new Player(200, true);
 	      upArrowDisplay = { display: 'flex' };
+	      $(".input").blur();
+	      this.hideGameViewModal();
 	    }
 	
 	    return React.createElement(
@@ -26554,14 +26597,15 @@
 	      this.renderInstructions(),
 	      React.createElement(
 	        'div',
-	        { className: 'view-container' },
+	        { className: 'view-container', ref: 'gameView', onClick: this.hideGameViewModal },
 	        React.createElement(
 	          'div',
 	          { className: 'view' },
 	          React.createElement(Platform, { className: "platform1", starting: true }),
 	          React.createElement(Platform, { className: "platform-elevator" + animateClass, text: '#Elevator' }),
 	          React.createElement(Platform, { className: 'platform2', ending: true, upArrowDisplay: upArrowDisplay })
-	        )
+	        ),
+	        React.createElement('div', { className: 'modal', ref: 'viewModal' })
 	      )
 	    );
 	  }

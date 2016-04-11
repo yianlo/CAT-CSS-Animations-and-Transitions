@@ -1,6 +1,8 @@
 var React = require('react'),
     Player = require('../../js/player'),
     Platform = require('./platform'),
+
+    Modal = require('boron/DropModal'),
     LinkedStateMixin = require('react-addons-linked-state-mixin');
 
 var Level1 = React.createClass({
@@ -54,11 +56,16 @@ var Level1 = React.createClass({
     } else {
       return this.renderFirstInstructions();
     }
+
+    this.refs.textBox.focus();
   },
 
   renderFirstInstructions: function(){
     return(
       <div className="text-box">
+        <div className="modal" ref="textBoxModal" onClick={this.showGameViewModal}>
+        </div>
+
         <h1 className="title">Level 1: The Bridge</h1>
         <p>
           Oh no! Mr. Cat is now stuck on platform 1 and can&#39;t get to the door.
@@ -108,6 +115,9 @@ var Level1 = React.createClass({
   renderSecondInstructions: function(){
     return(
       <div className="text-box two">
+        <div className="modal" ref="textBoxModal" onClick={this.showGameViewModal}>
+        </div>
+
         <h1 className="title">Level 1: The Bridge</h1>
         <p>
           Nice job! Now that we have the animation&#39;s <code>@keyframes</code> set up,
@@ -143,12 +153,25 @@ var Level1 = React.createClass({
     )
   },
 
+  hideGameViewModal: function(){
+    this.refs.viewModal.style.display = "none";
+    this.refs.textBoxModal.style.display = "block";
+    this.refs.gameView.focus();
+  },
+
+  showGameViewModal: function(){
+    this.refs.viewModal.style.display = "block";
+    this.refs.textBoxModal.style.display = "none";
+    this.refs.textBox.focus();
+  },
+
   render: function() {
     var animateClass = "";
     var upArrowDisplay = {};
     if(this.state.animation.replace(/\s/g, '') === "animation-name:widen-platform"){
       animateClass = " animate";
       upArrowDisplay = {display: 'flex'};
+      this.hideGameViewModal();
       this.player= new Player(600);
     }
 
@@ -156,11 +179,15 @@ var Level1 = React.createClass({
       <div className="level1 display-container">
         {this.renderInstructions()}
 
-        <div className="view-container">
-          <div className="view">
+        <div className="view-container" onClick={this.hideGameViewModal}>
+          <div className="view" ref="gameView">
             <Platform className={"platform1" + animateClass} starting={true} text="#Platform1"/>
             <Platform className="platform2" ending={true} upArrowDisplay={upArrowDisplay}/>
           </div>
+
+          <div className="modal" ref="viewModal">
+          </div>
+
         </div>
       </div>
     );

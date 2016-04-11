@@ -13,7 +13,7 @@ var Game = React.createClass({
   getChildContext: function() {
     return {
       checkCatAtDoor: this.checkCatAtDoor,
-      nextLevel: this.nextLevel,
+      nextLevel: this.nextLevel
     }
   },
 

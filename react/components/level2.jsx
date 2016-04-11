@@ -25,6 +25,18 @@ var Level2 = React.createClass({
     document.removeEventListener("keydown", this.handleLevelComplete, false);
   },
 
+  hideGameViewModal: function(){
+    this.refs.viewModal.style.display = "none";
+    this.refs.textBoxModal.style.display = "block";
+    this.refs.gameView.focus();
+  },
+
+  showGameViewModal: function(){
+    this.refs.viewModal.style.display = "block";
+    this.refs.textBoxModal.style.display = "none";
+    this.refs.textBox.focus();
+  },
+
   handleLevelComplete: function(e){
     if(e.keyCode === 38){
       this.checkCatAtDoor()
@@ -35,10 +47,12 @@ var Level2 = React.createClass({
     var playerDiv = $(".player");
 
     if(this.state.animation.replace(/\s/g, '') === "animation-duration:5s"){
-      if(playerDiv.position().left > 30.5 && playerDiv.position().left < 102){
-        alert("You won the game! Thank you for playing!\n\nMore levels to come. Checkout the GitHub page for more.")
-        location.href = "https://github.com/yianlo/CAT-CSS-Animations-and-Transitions"
-        return false;
+      if(playerDiv.parents('div.platform2').length > 0){
+        if(playerDiv.position().left > 30.5 && playerDiv.position().left < 102){
+          alert("You won the game! Thank you for playing!\n\nMore levels to come. Checkout the GitHub page for more.")
+          location.href = "https://github.com/yianlo/CAT-CSS-Animations-and-Transitions"
+          return false;
+        }
       }
     }
   },
@@ -46,6 +60,9 @@ var Level2 = React.createClass({
   renderInstructions: function(){
     return(
       <div className="text-box">
+        <div className="modal" ref="textBoxModal" onClick={this.showGameViewModal}>
+        </div>
+
         <h1 className="title">Level 2: The Elevator</h1>
         <p>
           Great job getting Mr. Cat this far. This time to get to the door, Mr. Cat
@@ -96,17 +113,22 @@ var Level2 = React.createClass({
       animateClass = " slow";
       this.player= new Player(200, true);
       upArrowDisplay = {display: 'flex'};
+      $(".input").blur();
+      this.hideGameViewModal();
     }
 
     return (
       <div className="level2 display-container">
         {this.renderInstructions()}
 
-        <div className="view-container">
+        <div className="view-container" ref="gameView" onClick={this.hideGameViewModal}>
           <div className="view">
             <Platform className={"platform1"} starting={true}/>
             <Platform className={"platform-elevator" + animateClass} text="#Elevator"/>
             <Platform className="platform2" ending={true} upArrowDisplay={upArrowDisplay}/>
+          </div>
+
+          <div className="modal" ref="viewModal">
           </div>
         </div>
       </div>

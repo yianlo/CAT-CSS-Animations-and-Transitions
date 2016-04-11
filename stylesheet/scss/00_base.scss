@@ -43,6 +43,19 @@ div, p{
   flex-direction: column;
 	padding: 20px 35px;
 
+	position: relative;
+
+	.modal{
+		position: absolute;
+		background-color: rgba(100, 100, 100, 0.4);
+		width: 100%;
+		height: 100%;
+		top: 0; left: 0;
+		z-index: 1000;
+		transition-duration: 0.5s;
+		display: none;
+	}
+
 	h1{
 		font-size: 28px;
 	}
@@ -68,6 +81,16 @@ div, p{
 
 	min-height: 620px;
 	min-width: 820px;
+
+	.modal{
+		position: absolute;
+		background-color: rgba(100, 100, 100, 0.4);
+		width: 100%;
+		height: 100%;
+		top: 0; left: 0;
+		z-index: 1000;
+		transition-duration: 0.5s;
+	}
 }
 
 .view-container:after{
