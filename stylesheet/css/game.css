@@ -261,6 +261,7 @@ div, p {
 
 .text-editor {
   position: relative;
+  flex: none;
   padding: 10px 10px 10px 40px;
   background-color: #ddd;
   border-radius: 4px;
@@ -301,12 +302,15 @@ div, p {
   .text-editor .transform-container.tab {
     padding-left: 8px; }
 
-.text-box code {
-  padding: 0 8px;
-  background-color: rgba(150, 150, 150, 0.2);
-  font-family: 'Source Code Pro', monospace;
-  font-weight: 900;
-  color: rgba(0, 0, 0, 0.6);
-  white-space: nowrap; }
+.text-box {
+  flex: none;
+  min-width: 430px; }
+  .text-box code {
+    padding: 0 8px;
+    background-color: rgba(150, 150, 150, 0.2);
+    font-family: 'Source Code Pro', monospace;
+    font-weight: 900;
+    color: rgba(0, 0, 0, 0.6);
+    white-space: nowrap; }
 
 /*# sourceMappingURL=game.css.map */
